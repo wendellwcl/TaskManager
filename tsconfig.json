@@ -3,12 +3,12 @@
     "compileOnSave": false,
     "compilerOptions": {
         "outDir": "./dist/out-tsc",
-        "baseUrl": "/",
+        "baseUrl": "./src",
         "paths": {
-            "@components/*": ["./app/components/*"],
-            "@pages/*": ["./app/pages/*"],
-            "@interfaces/*": ["./app/interfaces/*"],
-            "@services/*": ["./app/services/*"]
+            "@components/*": ["app/components/*"],
+            "@pages/*": ["app/pages/*"],
+            "@interfaces/*": ["app/interfaces/*"],
+            "@services/*": ["app/services/*"]
         },
         "forceConsistentCasingInFileNames": true,
         "strict": true,
