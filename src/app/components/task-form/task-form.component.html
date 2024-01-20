@@ -1,0 +1,35 @@
+<form [formGroup]="taskForm" (ngSubmit)="handleSubmitTaskForm()">
+    <label>
+        Título
+        <input type="text" formControlName="title" />
+    </label>
+
+    <label>
+        Assunto
+        <input type="text" formControlName="subject" list="subjectsDataList" />
+        <datalist>
+            <!-- <option value="subject1"></option>
+                ...
+                <option value="subjectN"></option> -->
+        </datalist>
+    </label>
+
+    <label>
+        Descrição
+        <textarea formControlName="description"></textarea>
+    </label>
+
+    <label>
+        <select formControlName="priority">
+            <option value="normal">Normal</option>
+            <option value="high">Alta</option>
+        </select>
+    </label>
+
+    <label>
+        Prazo
+        <input type="date" formControlName="deadlineDate" />
+    </label>
+
+    <button type="submit">Criar</button>
+</form>
