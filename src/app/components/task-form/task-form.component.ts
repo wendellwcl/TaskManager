@@ -21,6 +21,8 @@ export class TaskFormComponent {
     #localStorageService = inject(LocalStorageService);
     #formatDate = inject(FormatDateService);
 
+    #storageEvent = new Event('storage');
+
     public taskForm = this.#fb.group({
         id: new Date().getTime(),
         creationDate: new Date().toLocaleDateString(),
@@ -78,6 +80,7 @@ export class TaskFormComponent {
         if (this.taskForm.valid) {
             this.#formatDeadlineDate();
             this.#submitToLocalStorage();
+            window.dispatchEvent(this.#storageEvent);
             this.#clearTaskForm();
         }
     }
