@@ -1,5 +1,5 @@
 //Enums
-import { ETaskPriority } from 'app/enums/task-priority';
+import { ETaskPriority } from '@enums/task-priority.enum';
 
 export interface ITask {
     id: number;

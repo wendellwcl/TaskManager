@@ -8,6 +8,7 @@
             "@components/*": ["app/components/*"],
             "@pages/*": ["app/pages/*"],
             "@interfaces/*": ["app/interfaces/*"],
+            "@enums/*": ["app/enums/*"],
             "@services/*": ["app/services/*"]
         },
         "forceConsistentCasingInFileNames": true,
