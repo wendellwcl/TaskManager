@@ -35,17 +35,16 @@ export class TaskFormComponent {
     });
 
     #formatDeadlineDate() {
-        if (this.taskForm.get('deadlineDate')?.value) {
-            const deadlineDate = this.taskForm.get('deadlineDate');
-            const date = deadlineDate!.value;
+        const deadlineDate = this.taskForm.get('deadlineDate');
+        const deadlineDateValue = deadlineDate?.value || null;
 
-            const formatedDate = this.#formatDate.stringToLocaleDateString(
-                date!
-            );
+        if (deadlineDateValue) {
+            const formatedDate =
+                this.#formatDate.stringToLocaleDateString(deadlineDateValue);
 
             deadlineDate?.setValue(formatedDate);
         } else {
-            this.taskForm.get('deadlineDate')?.setValue(null);
+            deadlineDate?.setValue(null);
         }
     }
 
