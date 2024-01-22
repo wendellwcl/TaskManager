@@ -28,6 +28,10 @@ export class TaskListRenderComponent implements OnInit, OnDestroy {
 
     public tasksList = signal<ITask[] | null>(null);
 
+    public handleDeleteTask(id: number) {
+        this.#tasksListService.deleteTask(id);
+    }
+
     ngOnInit(): void {
         this.#tasksListSubscription =
             this.#tasksListService.getTasksList$.subscribe((value) =>
