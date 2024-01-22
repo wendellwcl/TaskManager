@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 //Enums
 import { ETaskPriority } from '@enums/task-priority.enum';
+import { ITask } from '@interfaces/task.interface';
 
 //Services
 import { FormatDateService } from '@services/formatDate/format-date.service';
@@ -76,11 +77,14 @@ export class TaskFormComponent {
         });
     }
 
-    handleSubmitTaskForm() {
+    #handleCreateTask(newTask: ITask) {
+        this.#tasksListService.createTask(newTask);
+    }
+
+    public handleSubmitTaskForm() {
         if (this.taskForm.valid) {
             this.#formatDeadlineDate();
-            this.#submitToLocalStorage();
-            window.dispatchEvent(this.#tasksListService.storageEvent);
+            this.#handleCreateTask(this.taskForm.value as ITask);
             this.#clearTaskForm();
         }
     }

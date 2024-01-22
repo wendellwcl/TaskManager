@@ -13,15 +13,26 @@ import { LocalStorageService } from '@services/localStorage/local-storage.servic
 export class TasksListService {
     #localStorageService = inject(LocalStorageService);
 
-    public storageEvent = new Event('storage');
-
-    #tasksList = new BehaviorSubject<ITask[] | null>(null);
+    #tasksList = new BehaviorSubject<ITask[]>([]);
     public getTasksList$ = this.#tasksList.asObservable();
 
     #setTasksList() {
         const getTasks =
             this.#localStorageService.getLocalStorageItem('tasksList');
-        this.#tasksList.next(getTasks);
+
+        if (getTasks) {
+            this.#tasksList.next(getTasks);
+        }
+    }
+
+    public createTask(newTask: ITask) {
+        const currentTasksList = this.#tasksList.value;
+        const updateTasksList = [...currentTasksList, newTask];
+
+        this.#localStorageService.setLocalStorageItem(
+            'tasksList',
+            updateTasksList
+        );
     }
 
     public deleteTask(id: number) {
