@@ -7,6 +7,7 @@ import { ETaskPriority } from '@enums/task-priority.enum';
 //Services
 import { FormatDateService } from '@services/formatDate/format-date.service';
 import { LocalStorageService } from '@services/localStorage/local-storage.service';
+import { TasksListService } from '@services/tasksList/tasks-list.service';
 
 @Component({
     selector: 'app-task-form',
@@ -19,9 +20,8 @@ import { LocalStorageService } from '@services/localStorage/local-storage.servic
 export class TaskFormComponent {
     #fb = inject(FormBuilder);
     #localStorageService = inject(LocalStorageService);
+    #tasksListService = inject(TasksListService);
     #formatDate = inject(FormatDateService);
-
-    #storageEvent = new Event('storage');
 
     public taskForm = this.#fb.group({
         id: new Date().getTime(),
@@ -80,7 +80,7 @@ export class TaskFormComponent {
         if (this.taskForm.valid) {
             this.#formatDeadlineDate();
             this.#submitToLocalStorage();
-            window.dispatchEvent(this.#storageEvent);
+            window.dispatchEvent(this.#tasksListService.storageEvent);
             this.#clearTaskForm();
         }
     }

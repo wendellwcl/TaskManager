@@ -16,6 +16,8 @@ export class TasksListService {
     #tasksList = new BehaviorSubject<ITask[] | null>(null);
     public getTasksList$ = this.#tasksList.asObservable();
 
+    public storageEvent = new Event('storage');
+
     #setTasksList() {
         const getTasks =
             this.#localStorageService.getLocalStorageItem('tasksList');
