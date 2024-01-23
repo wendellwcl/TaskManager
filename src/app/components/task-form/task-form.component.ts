@@ -1,14 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
-//Interfaces
-import { ITask } from '@interfaces/task.interface';
-
 //Enums
 import { ETaskPriority } from '@enums/task-priority.enum';
 
 //Services
-import { FormatDateService } from '@services/formatDate/format-date.service';
 import { TasksListService } from '@services/tasksList/tasks-list.service';
 
 @Component({
@@ -22,28 +18,9 @@ import { TasksListService } from '@services/tasksList/tasks-list.service';
 export class TaskFormComponent {
     #fb = inject(FormBuilder);
     #tasksListService = inject(TasksListService);
-    #formatDate = inject(FormatDateService);
 
-    #createNewTask() {
-        const formValues: any = this.taskForm.value;
-
-        const newTask: ITask = {
-            id: new Date().getTime(),
-            title: formValues.title,
-            subject: formValues.subject,
-            description: formValues.description,
-            priority: formValues.priority,
-            deadlineDate: this.#formatDate.stringToLocaleDateString(
-                formValues.deadlineDate
-            ),
-            creationDate: new Date().toLocaleDateString(),
-        };
-
-        return newTask;
-    }
-
-    #handleCreateTask(newTask: ITask) {
-        this.#tasksListService.createTask(newTask);
+    #handleCreateTask(taskFormValues: any) {
+        this.#tasksListService.createNewTask(taskFormValues);
     }
 
     #clearTaskForm() {
@@ -66,8 +43,15 @@ export class TaskFormComponent {
 
     public handleSubmitTaskForm() {
         if (this.taskForm.valid) {
-            const newTask: ITask = this.#createNewTask();
-            this.#handleCreateTask(newTask);
+            const taskFormValues = {
+                title: this.taskForm.get('title')!.value,
+                subject: this.taskForm.get('subject')!.value,
+                description: this.taskForm.get('description')!.value,
+                priority: this.taskForm.get('priority')!.value,
+                deadlineDate: this.taskForm.get('deadlineDate')!.value,
+            };
+
+            this.#handleCreateTask(taskFormValues);
             this.#clearTaskForm();
         }
     }

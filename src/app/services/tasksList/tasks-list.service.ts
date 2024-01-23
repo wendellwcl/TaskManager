@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ITask } from '@interfaces/task.interface';
 
 //Services
+import { FormatDateService } from '@services/formatDate/format-date.service';
 import { LocalStorageService } from '@services/localStorage/local-storage.service';
 
 @Injectable({
@@ -12,6 +13,7 @@ import { LocalStorageService } from '@services/localStorage/local-storage.servic
 })
 export class TasksListService {
     #localStorageService = inject(LocalStorageService);
+    #formatDate = inject(FormatDateService);
 
     #tasksList = new BehaviorSubject<ITask[]>([]);
     public getTasksList$ = this.#tasksList.asObservable();
@@ -25,7 +27,7 @@ export class TasksListService {
         }
     }
 
-    public createTask(newTask: ITask) {
+    public addNewTaskToLocalStorage(newTask: ITask) {
         const currentTasksList = this.#tasksList.value;
         const updateTasksList = [...currentTasksList, newTask];
 
@@ -33,6 +35,22 @@ export class TasksListService {
             'tasksList',
             updateTasksList
         );
+    }
+
+    public createNewTask(taskValues: any) {
+        const newTask: ITask = {
+            id: new Date().getTime(),
+            title: taskValues.title,
+            subject: taskValues.subject,
+            description: taskValues.description,
+            priority: taskValues.priority,
+            deadlineDate: this.#formatDate.stringToLocaleDateString(
+                taskValues.deadlineDate
+            ),
+            creationDate: new Date().toLocaleDateString(),
+        };
+
+        this.addNewTaskToLocalStorage(newTask);
     }
 
     public deleteTask(id: number) {
