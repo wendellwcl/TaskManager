@@ -4,7 +4,11 @@ import { Injectable } from '@angular/core';
     providedIn: 'root',
 })
 export class FormatDateService {
-    public stringToLocaleDateString(initialDate: string) {
+    public stringToLocaleDateString(initialDate?: string) {
+        if (!initialDate) {
+            return null;
+        }
+
         const date = new Date(initialDate);
 
         const day = date.getDate() + 1;

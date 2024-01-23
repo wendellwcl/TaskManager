@@ -5,8 +5,8 @@ export interface ITask {
     id: number;
     creationDate: string;
     title: string;
-    subject?: string;
-    description?: string;
+    subject: string | null;
+    description: string | null;
     priority: ETaskPriority;
-    deadlineDate?: string;
+    deadlineDate: string | null;
 }

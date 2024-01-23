@@ -24,48 +24,50 @@ export class TaskFormComponent {
     #tasksListService = inject(TasksListService);
     #formatDate = inject(FormatDateService);
 
-    public taskForm = this.#fb.group({
-        id: new Date().getTime(),
-        creationDate: new Date().toLocaleDateString(),
-        title: ['', [Validators.required]],
-        subject: [''],
-        description: [''],
-        priority: [ETaskPriority.DEFAULT],
-        deadlineDate: '',
-    });
+    #createNewTask() {
+        const formValues: any = this.taskForm.value;
 
-    #formatDeadlineDate() {
-        const deadlineDate = this.taskForm.get('deadlineDate');
-        const deadlineDateValue = deadlineDate?.value || null;
+        const newTask: ITask = {
+            id: new Date().getTime(),
+            title: formValues.title,
+            subject: formValues.subject,
+            description: formValues.description,
+            priority: formValues.priority,
+            deadlineDate: this.#formatDate.stringToLocaleDateString(
+                formValues.deadlineDate
+            ),
+            creationDate: new Date().toLocaleDateString(),
+        };
 
-        if (deadlineDateValue) {
-            const formatedDate =
-                this.#formatDate.stringToLocaleDateString(deadlineDateValue);
-
-            deadlineDate?.setValue(formatedDate);
-        } else {
-            deadlineDate?.setValue(null);
-        }
-    }
-
-    #clearTaskForm() {
-        this.taskForm.patchValue({
-            title: '',
-            subject: '',
-            description: '',
-            priority: ETaskPriority.DEFAULT,
-            deadlineDate: '',
-        });
+        return newTask;
     }
 
     #handleCreateTask(newTask: ITask) {
         this.#tasksListService.createTask(newTask);
     }
 
+    #clearTaskForm() {
+        this.taskForm.patchValue({
+            title: null,
+            subject: null,
+            description: null,
+            priority: ETaskPriority.DEFAULT,
+            deadlineDate: null,
+        });
+    }
+
+    public taskForm = this.#fb.group({
+        title: [null, [Validators.required]],
+        subject: [null],
+        description: [null],
+        priority: [ETaskPriority.DEFAULT],
+        deadlineDate: [null],
+    });
+
     public handleSubmitTaskForm() {
         if (this.taskForm.valid) {
-            this.#formatDeadlineDate();
-            this.#handleCreateTask(this.taskForm.value as ITask);
+            const newTask: ITask = this.#createNewTask();
+            this.#handleCreateTask(newTask);
             this.#clearTaskForm();
         }
     }
