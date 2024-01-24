@@ -5,7 +5,6 @@ import { BehaviorSubject } from 'rxjs';
 import { ITask } from '@interfaces/task.interface';
 
 //Services
-import { FormatDateService } from '@services/formatDate/format-date.service';
 import { LocalStorageService } from '@services/localStorage/local-storage.service';
 
 @Injectable({
@@ -13,7 +12,6 @@ import { LocalStorageService } from '@services/localStorage/local-storage.servic
 })
 export class TasksListService {
     #localStorageService = inject(LocalStorageService);
-    #formatDate = inject(FormatDateService);
 
     #tasksList = new BehaviorSubject<ITask[]>([]);
     public getTasksList$ = this.#tasksList.asObservable();
@@ -44,10 +42,8 @@ export class TasksListService {
             subject: taskValues.subject,
             description: taskValues.description,
             priority: taskValues.priority,
-            deadlineDate: this.#formatDate.stringToLocaleDateString(
-                taskValues.deadlineDate
-            ),
-            creationDate: new Date().toLocaleDateString(),
+            deadlineDate: taskValues.deadlineDate,
+            creationDate: new Date().toISOString().split('T')[0],
         };
 
         this.addNewTaskToLocalStorage(newTask);
