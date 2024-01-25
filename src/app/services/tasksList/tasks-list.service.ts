@@ -16,6 +16,16 @@ export class TasksListService {
     #tasksList = new BehaviorSubject<ITask[]>([]);
     public getTasksList$ = this.#tasksList.asObservable();
 
+    public getTaskById(id: number | string) {
+        const taskId = Number(id);
+
+        const task = this.#tasksList.value.filter((task) => {
+            return task.id === taskId;
+        });
+
+        return task[0];
+    }
+
     #setTasksList() {
         const getTasks =
             this.#localStorageService.getLocalStorageItem('tasksList');
