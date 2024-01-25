@@ -1,8 +1,20 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    Input,
+    OnInit,
+    inject,
+    signal,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 //Enums
 import { ETaskPriority } from '@enums/task-priority.enum';
+
+//Interfaces
+import { ITask } from '@interfaces/task.interface';
 
 //Services
 import { TasksListService } from '@services/tasksList/tasks-list.service';
@@ -15,12 +27,39 @@ import { TasksListService } from '@services/tasksList/tasks-list.service';
     styleUrl: './task-form.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TaskFormComponent {
+export class TaskFormComponent implements OnInit, AfterViewInit {
     #fb = inject(FormBuilder);
+    #router = inject(Router);
     #tasksListService = inject(TasksListService);
 
-    #handleCreateTask(taskFormValues: any) {
-        this.#tasksListService.createNewTask(taskFormValues);
+    public btnText = signal<string | null>(null);
+
+    public getId = signal<number | null>(null);
+    @Input() set id(id: number) {
+        this.getId.set(id);
+    }
+
+    #updateTask = signal<ITask | null>(null);
+
+    #setInputValues() {
+        this.taskForm.patchValue({
+            title: this.#updateTask()?.title,
+            subject: this.#updateTask()?.subject,
+            description: this.#updateTask()?.description,
+            priority: this.#updateTask()?.priority,
+            deadlineDate: this.#updateTask()?.deadlineDate,
+        });
+    }
+
+    #handleCreateTask() {
+        this.#tasksListService.createNewTask(this.taskForm.value);
+    }
+
+    #handleUpdateTask() {
+        this.#tasksListService.updateTask(
+            this.#updateTask()!.id,
+            this.taskForm.value
+        );
     }
 
     #clearTaskForm() {
@@ -33,7 +72,7 @@ export class TaskFormComponent {
         });
     }
 
-    public taskForm = this.#fb.group({
+    public taskForm = this.#fb.group<any>({
         title: [null, [Validators.required]],
         subject: [null],
         description: [null],
@@ -43,16 +82,31 @@ export class TaskFormComponent {
 
     public handleSubmitTaskForm() {
         if (this.taskForm.valid) {
-            const taskFormValues = {
-                title: this.taskForm.get('title')!.value,
-                subject: this.taskForm.get('subject')!.value,
-                description: this.taskForm.get('description')!.value,
-                priority: this.taskForm.get('priority')!.value,
-                deadlineDate: this.taskForm.get('deadlineDate')!.value,
-            };
+            if (this.#updateTask()) {
+                this.#handleUpdateTask();
+                this.#router.navigate(['/']);
+            } else {
+                this.#handleCreateTask();
+            }
 
-            this.#handleCreateTask(taskFormValues);
             this.#clearTaskForm();
+        }
+    }
+
+    ngOnInit(): void {
+        if (this.getId()) {
+            const task = this.#tasksListService.getTaskById(this.getId()!);
+            this.#updateTask.set(task);
+            this.btnText.set('salvar');
+        } else {
+            this.#clearTaskForm();
+            this.btnText.set('criar');
+        }
+    }
+
+    ngAfterViewInit(): void {
+        if (this.#updateTask()) {
+            this.#setInputValues();
         }
     }
 }

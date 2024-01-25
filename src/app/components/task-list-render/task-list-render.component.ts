@@ -6,18 +6,19 @@ import {
     inject,
     signal,
 } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 //Interfaces
 import { ITask } from '@interfaces/task.interface';
 
 //Services
 import { TasksListService } from '@services/tasksList/tasks-list.service';
-import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-task-list-render',
     standalone: true,
-    imports: [],
+    imports: [RouterLink],
     templateUrl: './task-list-render.component.html',
     styleUrl: './task-list-render.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,

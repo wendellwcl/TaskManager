@@ -2,5 +2,6 @@
 <li>
     {{ item.title }}
     <button (click)="handleDeleteTask(item.id)">Excluir</button>
+    <a routerLink="/edit/{{ item.id }}">Editar</a>
 </li>
 }

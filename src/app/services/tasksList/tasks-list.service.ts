@@ -59,6 +59,23 @@ export class TasksListService {
         this.addNewTaskToLocalStorage(newTask);
     }
 
+    public updateTask(id: number, taskValues: any) {
+        for (let task of this.#tasksList.value) {
+            if (task.id === id) {
+                task.title = taskValues.title;
+                task.subject = taskValues.subject;
+                task.description = taskValues.description;
+                task.priority = taskValues.priority;
+                task.deadlineDate = taskValues.deadlineDate;
+            }
+        }
+
+        this.#localStorageService.setLocalStorageItem(
+            'tasksList',
+            this.#tasksList.value
+        );
+    }
+
     public deleteTask(id: number) {
         const updateTaskList = this.#tasksList.value?.filter((task) => {
             return task.id !== id;
