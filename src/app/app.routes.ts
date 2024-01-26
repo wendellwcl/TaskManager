@@ -18,16 +18,16 @@ export const routes: Routes = [
         path: 'create-task',
         title: 'Criar tarefa',
         loadComponent: () =>
-            import('@pages/create-task/create-task.component').then(
-                (m) => m.CreateTaskComponent
+            import('@components/task-form/task-form.component').then(
+                (m) => m.TaskFormComponent
             ),
     },
     {
-        path: 'edit/:id',
+        path: 'edit-task/:id',
         title: 'Editar',
         loadComponent: () =>
-            import('@pages/edit-task/edit-task.component').then(
-                (m) => m.EditTaskComponent
+            import('@components/task-form/task-form.component').then(
+                (m) => m.TaskFormComponent
             ),
     },
     {
