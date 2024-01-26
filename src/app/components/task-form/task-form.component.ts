@@ -84,11 +84,11 @@ export class TaskFormComponent implements OnInit, AfterViewInit {
         if (this.taskForm.valid) {
             if (this.#updateTask()) {
                 this.#handleUpdateTask();
-                this.#router.navigate(['/']);
             } else {
                 this.#handleCreateTask();
             }
 
+            this.#router.navigate(['/dashboard']);
             this.#clearTaskForm();
         }
     }
