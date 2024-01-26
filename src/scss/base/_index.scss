@@ -1,0 +1,7 @@
+@use "./_reset";
+@use "./_typography";
+
+html,
+body {
+    background-color: var(--color-black);
+}
