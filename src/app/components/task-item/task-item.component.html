@@ -1,0 +1,39 @@
+<li class="task-item">
+    <div class="task-item-header">
+        <div class="task-titles">
+            <p class="task-title">
+                {{ title }}
+            </p>
+
+            @if(subject){
+            <p class="task-subject">
+                {{ subject }}
+            </p>
+            }
+        </div>
+
+        <div class="task-actions">
+            <button (click)="handleDeleteTask(id)">Excluir</button>
+            <button (click)="handleUpdateTask(id)">Editar</button>
+        </div>
+    </div>
+
+    <div class="task-item-subheader">
+        @if(deadlineDate){
+        <p class="task-deadlineDate">Prazo: {{ deadlineDate }}</p>
+        }
+
+        <p class="task-priority">Prioridade: {{ priority }}</p>
+    </div>
+
+    @if(description){
+    <div class="task-item-details">
+        <details>
+            <summary>Ver descrição</summary>
+            <p>
+                {{ description }}
+            </p>
+        </details>
+    </div>
+    }
+</li>

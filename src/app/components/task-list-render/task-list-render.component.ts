@@ -12,13 +12,16 @@ import { Subscription } from 'rxjs';
 //Interfaces
 import { ITask } from '@interfaces/task.interface';
 
+//Components
+import { TaskItemComponent } from '@components/task-item/task-item.component';
+
 //Services
 import { TasksListService } from '@services/tasksList/tasks-list.service';
 
 @Component({
     selector: 'app-task-list-render',
     standalone: true,
-    imports: [RouterLink],
+    imports: [RouterLink, TaskItemComponent],
     templateUrl: './task-list-render.component.html',
     styleUrl: './task-list-render.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,10 +31,6 @@ export class TaskListRenderComponent implements OnInit, OnDestroy {
     #tasksListSubscription?: Subscription;
 
     public tasksList = signal<ITask[] | null>(null);
-
-    public handleDeleteTask(id: number) {
-        this.#tasksListService.deleteTask(id);
-    }
 
     ngOnInit(): void {
         this.#tasksListSubscription =
