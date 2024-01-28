@@ -1,36 +1,63 @@
-<form [formGroup]="taskForm" (ngSubmit)="handleSubmitTaskForm()">
-    <label>
-        Título
-        <input type="text" formControlName="title" />
-    </label>
+<section class="task-form-container">
+    <form
+        class="task-form"
+        [formGroup]="taskForm"
+        (ngSubmit)="handleSubmitTaskForm()"
+    >
+        <div class="input-container">
+            <input
+                type="text"
+                id="title"
+                class="input-field"
+                placeholder="Título"
+                autocomplete="off"
+                formControlName="title"
+            />
+            <label for="title" class="label"> Título </label>
+        </div>
 
-    <label>
-        Assunto
-        <input type="text" formControlName="subject" list="subjectsDataList" />
-        <datalist>
-            <!-- <option value="subject1"></option>
-                ...
-                <option value="subjectN"></option> -->
-        </datalist>
-    </label>
+        <div class="input-container">
+            <input
+                type="text"
+                id="subject"
+                class="input-field"
+                placeholder="Assunto"
+                autocomplete="off"
+                formControlName="subject"
+                list="subjectsDataList"
+            />
+            <label for="subject" class="label"> Assunto </label>
+            <datalist id="subjectsDataList">
+                <!-- <option value="subject1"></option>
+                    ...
+                    <option value="subjectN"></option> -->
+            </datalist>
+        </div>
 
-    <label>
-        Descrição
-        <textarea formControlName="description"></textarea>
-    </label>
+        <div class="input-container">
+            <textarea
+                id="description"
+                class="input-field"
+                placeholder="Descrição"
+                autocomplete="off"
+                formControlName="description"
+            ></textarea>
+            <label for="description" class="label"> Descrição </label>
+        </div>
 
-    <label>
-        Prioridade
-        <select formControlName="priority">
-            <option value="padrão">Padrão</option>
-            <option value="high">Alta</option>
-        </select>
-    </label>
+        <div class="select-container">
+            <label for="priority"> Prioridade </label>
+            <select id="priority" formControlName="priority">
+                <option value="padrão">Padrão</option>
+                <option value="high">Alta</option>
+            </select>
+        </div>
 
-    <label>
-        Prazo
-        <input type="date" formControlName="deadlineDate" />
-    </label>
+        <div class="date-container">
+            <label for="date"> Prazo </label>
+            <input type="date" id="date" formControlName="deadlineDate" />
+        </div>
 
-    <button type="submit">{{ this.btnText() }}</button>
-</form>
+        <button class="btn-submit" type="submit">{{ this.btnText() }}</button>
+    </form>
+</section>

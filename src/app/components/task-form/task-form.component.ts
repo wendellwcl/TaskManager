@@ -108,5 +108,21 @@ export class TaskFormComponent implements OnInit, AfterViewInit {
         if (this.#updateTask()) {
             this.#setInputValues();
         }
+
+        document.querySelectorAll('.input-field').forEach((element) => {
+            const inputElement = element as HTMLInputElement;
+            if (inputElement.value) {
+                inputElement.nextElementSibling?.classList.add('filled');
+            }
+
+            element.addEventListener('blur', (event) => {
+                const inputElement = event.currentTarget as HTMLInputElement;
+                if (inputElement.value != '') {
+                    inputElement.nextElementSibling?.classList.add('filled');
+                } else {
+                    inputElement.nextElementSibling?.classList.remove('filled');
+                }
+            });
+        });
     }
 }
