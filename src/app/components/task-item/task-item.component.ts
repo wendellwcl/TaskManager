@@ -5,6 +5,7 @@ import {
     Input,
     inject,
 } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
 
 //Enums
@@ -16,7 +17,7 @@ import { TasksListService } from '@services/tasksList/tasks-list.service';
 @Component({
     selector: 'app-task-item',
     standalone: true,
-    imports: [CommonModule, RouterLink],
+    imports: [CommonModule, RouterLink, MatIconModule],
     templateUrl: './task-item.component.html',
     styleUrl: './task-item.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,6 +33,8 @@ export class TaskItemComponent {
     @Input() description?: string | null;
     @Input({ required: true }) priority!: ETaskPriority;
     @Input() deadlineDate?: string | null;
+
+    public taskPrioritiesValues = ETaskPriority;
 
     public handleUpdateTask(id: number) {
         this.#router.navigate([`/edit-task/${id}`]);
