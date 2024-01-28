@@ -1,4 +1,4 @@
 export enum ETaskPriority {
-    DEFAULT = 'padrão',
-    HIGH = 'alta',
+    DEFAULT = 'Padrão',
+    HIGH = 'Alta',
 }

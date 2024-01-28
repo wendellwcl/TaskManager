@@ -34,6 +34,7 @@ export class TaskFormComponent implements OnInit, AfterViewInit {
 
     public headerText = signal<string | null>(null);
     public btnText = signal<string | null>(null);
+    public taskPriorities = ETaskPriority;
 
     public getId = signal<number | null>(null);
     @Input() set id(id: number) {

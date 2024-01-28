@@ -49,8 +49,12 @@
         <div class="select-container">
             <label for="priority"> Prioridade </label>
             <select id="priority" formControlName="priority">
-                <option value="padrão">Padrão</option>
-                <option value="high">Alta</option>
+                <option [value]="taskPriorities.DEFAULT">
+                    {{ taskPriorities.DEFAULT }}
+                </option>
+                <option [value]="taskPriorities.HIGH">
+                    {{ taskPriorities.HIGH }}
+                </option>
             </select>
         </div>
 
