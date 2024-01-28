@@ -32,6 +32,7 @@ export class TaskFormComponent implements OnInit, AfterViewInit {
     #router = inject(Router);
     #tasksListService = inject(TasksListService);
 
+    public headerText = signal<string | null>(null);
     public btnText = signal<string | null>(null);
 
     public getId = signal<number | null>(null);
@@ -97,9 +98,11 @@ export class TaskFormComponent implements OnInit, AfterViewInit {
         if (this.getId()) {
             const task = this.#tasksListService.getTaskById(this.getId()!);
             this.#updateTask.set(task);
+            this.headerText.set('Editar tarefa');
             this.btnText.set('salvar');
         } else {
             this.#clearTaskForm();
+            this.headerText.set('criar tarefa');
             this.btnText.set('criar');
         }
     }
