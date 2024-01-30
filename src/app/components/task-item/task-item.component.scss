@@ -84,24 +84,36 @@
 
     .task-infos {
         display: flex;
-        gap: 1.2rem;
+        gap: 2.4rem;
         margin-top: 0.4rem;
+
+        > *:not(:last-child) {
+            &::after {
+                content: "⦁";
+                position: absolute;
+                right: -1.4rem;
+                top: 0;
+            }
+        }
     }
 
     .task-subject,
     .task-priority,
     .task-deadlineDate {
-        padding: 0 0.4rem;
-        background: var(--color-secondary);
-        border-radius: 5px;
-        color: var(--color-black-010);
+        color: var(--color-secondary);
+        text-transform: capitalize;
         font-size: 1.4rem;
         font-weight: bold;
-        text-transform: capitalize;
+        position: relative;
     }
 
     .task-item-details {
         margin-top: 1.2rem;
+        font-size: 1.4rem;
+
+        summary {
+            cursor: pointer;
+        }
 
         details[open] {
             summary {

@@ -29,17 +29,17 @@
 
         <!---->
 
-        @if (priority === taskPrioritiesValues.HIGH) {
-        <div class="task-priority">
-            <p>Prioridade: {{ priority }}</p>
+        @if(deadlineDate){
+        <div class="task-deadlineDate">
+            <p>{{ deadlineDate | date }}</p>
         </div>
         }
 
         <!---->
 
-        @if(deadlineDate){
-        <div class="task-deadlineDate">
-            <p>Prazo: {{ deadlineDate | date : "dd/MM/yyyy" }}</p>
+        @if (priority === taskPrioritiesValues.HIGH) {
+        <div class="task-priority">
+            <p>Prioridade {{ priority }}</p>
         </div>
         }
     </div>
