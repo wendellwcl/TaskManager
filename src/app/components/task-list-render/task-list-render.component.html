@@ -9,5 +9,9 @@
         [priority]="item.priority"
         [deadlineDate]="item.deadlineDate"
     />
+    } @empty {
+    <div class="tasks-list-empty">
+        <p>Sem tarefas registradas.</p>
+    </div>
     }
 </section>
