@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 //Interfaces
@@ -18,6 +18,8 @@ export class TasksListService {
     #tasksListRender = new BehaviorSubject<ITask[]>([]);
     public getTasksListRender$ = this.#tasksListRender.asObservable();
 
+    #tasksFilterQuery = signal<string | null>(null);
+
     public getTaskById(id: number | string) {
         const taskId = Number(id);
 
@@ -34,13 +36,13 @@ export class TasksListService {
             return;
         }
 
+        this.#tasksFilterQuery.set(query);
         const regex = new RegExp(`^${query}`, 'i');
-
-        const filter = this.#tasksList.value.filter((task) => {
+        const filterTasks = this.#tasksList.value.filter((task) => {
             return regex.test(task.title) || regex.test(task.subject!);
         });
 
-        this.#tasksListRender.next(filter);
+        this.#tasksListRender.next(filterTasks);
     }
 
     #setTasksList() {
@@ -49,7 +51,12 @@ export class TasksListService {
 
         if (getTasks) {
             this.#tasksList.next(getTasks);
-            this.#tasksListRender.next(getTasks);
+
+            if (this.#tasksFilterQuery()) {
+                this.searchTasks(this.#tasksFilterQuery()!);
+            } else {
+                this.#tasksListRender.next(getTasks);
+            }
         }
     }
 

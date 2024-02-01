@@ -21,7 +21,9 @@ export class DashboardHeaderComponent {
         this.#router.navigate(['/create-task']);
     }
 
-    public searchTasks($event: any) {
-        this.#tasksListService.searchTasks($event.target.value);
+    public searchTasks($event: KeyboardEvent) {
+        const target = $event.target as HTMLInputElement;
+        const query = target.value;
+        this.#tasksListService.searchTasks(query);
     }
 }
