@@ -34,7 +34,7 @@ export class TaskListRenderComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.#tasksListSubscription =
-            this.#tasksListService.getTasksList$.subscribe((value) =>
+            this.#tasksListService.getTasksListRender$.subscribe((value) =>
                 this.tasksList.set(value)
             );
     }

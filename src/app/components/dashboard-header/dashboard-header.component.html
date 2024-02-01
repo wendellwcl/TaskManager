@@ -1,5 +1,10 @@
 <header class="dashboard-header">
-    <input type="text" class="search-input" placeholder="Pesquisar..." />
+    <input
+        type="text"
+        class="search-input"
+        placeholder="Pesquisar..."
+        (keyup)="searchTasks($event)"
+    />
 
     <button class="btn-create-task" (click)="handleCreateTask()">
         <mat-icon>note_add</mat-icon>

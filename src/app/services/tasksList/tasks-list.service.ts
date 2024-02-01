@@ -14,7 +14,9 @@ export class TasksListService {
     #localStorageService = inject(LocalStorageService);
 
     #tasksList = new BehaviorSubject<ITask[]>([]);
-    public getTasksList$ = this.#tasksList.asObservable();
+
+    #tasksListRender = new BehaviorSubject<ITask[]>([]);
+    public getTasksListRender$ = this.#tasksListRender.asObservable();
 
     public getTaskById(id: number | string) {
         const taskId = Number(id);
@@ -26,12 +28,28 @@ export class TasksListService {
         return task[0];
     }
 
+    public searchTasks(query: string) {
+        if (!query) {
+            this.#tasksListRender.next(this.#tasksList.value);
+            return;
+        }
+
+        const regex = new RegExp(`^${query}`, 'i');
+
+        const filter = this.#tasksList.value.filter((task) => {
+            return regex.test(task.title) || regex.test(task.subject!);
+        });
+
+        this.#tasksListRender.next(filter);
+    }
+
     #setTasksList() {
         const getTasks =
             this.#localStorageService.getLocalStorageItem('tasksList');
 
         if (getTasks) {
             this.#tasksList.next(getTasks);
+            this.#tasksListRender.next(getTasks);
         }
     }
 
