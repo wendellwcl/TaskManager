@@ -5,7 +5,7 @@
         [formGroup]="taskForm"
         (ngSubmit)="handleSubmitTaskForm()"
     >
-        <div class="input-container">
+        <div class="input-container" #titleContainer>
             <input
                 type="text"
                 id="title"
@@ -14,8 +14,12 @@
                 placeholder="Título"
                 autocomplete="off"
                 formControlName="title"
+                (focus)="removeInvalidClass($event)"
             />
             <label for="title" class="label"> Título </label>
+            <div class="invalid-input-message">
+                O campo "Título" deve ser preenchido.
+            </div>
         </div>
 
         <div class="input-container">

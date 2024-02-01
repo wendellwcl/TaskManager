@@ -35,6 +35,7 @@ export class TaskFormComponent implements OnInit, AfterViewInit {
     #tasksListService = inject(TasksListService);
 
     @ViewChild('titleInput') titleInput!: ElementRef;
+    @ViewChild('titleContainer') titleContainer!: ElementRef;
 
     public headerText = signal<string | null>(null);
     public btnText = signal<string | null>(null);
@@ -78,6 +79,12 @@ export class TaskFormComponent implements OnInit, AfterViewInit {
         });
     }
 
+    public removeInvalidClass($event: FocusEvent) {
+        const element = $event.target as HTMLElement;
+        const parentEl = element.parentNode as HTMLElement;
+        parentEl.classList.remove('invalid');
+    }
+
     public taskForm = this.#fb.group<any>({
         title: [null, [Validators.required]],
         subject: [null],
@@ -96,6 +103,11 @@ export class TaskFormComponent implements OnInit, AfterViewInit {
 
             this.#router.navigate(['/dashboard']);
             this.#clearTaskForm();
+            return;
+        }
+
+        if (!this.taskForm.get('title')?.valid) {
+            this.titleContainer.nativeElement.classList.add('invalid');
         }
     }
 

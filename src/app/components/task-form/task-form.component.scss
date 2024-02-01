@@ -34,6 +34,23 @@
         > textarea {
             height: 120px;
         }
+
+        .invalid-input-message {
+            display: none;
+            color: var(--color-danger);
+            font-size: 1.4rem;
+            margin-top: 0.4rem;
+        }
+
+        &.invalid {
+            input {
+                border: 2px solid var(--color-danger);
+            }
+
+            .invalid-input-message {
+                display: block;
+            }
+        }
     }
 
     .label {
