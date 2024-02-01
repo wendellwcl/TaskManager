@@ -2,8 +2,10 @@ import {
     AfterViewInit,
     ChangeDetectionStrategy,
     Component,
+    ElementRef,
     Input,
     OnInit,
+    ViewChild,
     inject,
     signal,
 } from '@angular/core';
@@ -31,6 +33,8 @@ export class TaskFormComponent implements OnInit, AfterViewInit {
     #fb = inject(FormBuilder);
     #router = inject(Router);
     #tasksListService = inject(TasksListService);
+
+    @ViewChild('titleInput') titleInput!: ElementRef;
 
     public headerText = signal<string | null>(null);
     public btnText = signal<string | null>(null);
@@ -112,6 +116,8 @@ export class TaskFormComponent implements OnInit, AfterViewInit {
         if (this.#updateTask()) {
             this.#setInputValues();
         }
+
+        this.titleInput.nativeElement.focus();
 
         document.querySelectorAll('.input-field').forEach((element) => {
             const inputElement = element as HTMLInputElement;
