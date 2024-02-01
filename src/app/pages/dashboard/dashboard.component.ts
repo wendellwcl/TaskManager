@@ -31,6 +31,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     public tasksLists = signal<ITask[] | null>(null);
 
     ngOnInit(): void {
+        this.#tasksListService.searchTasks('');
+
         this.#tasksListSubscription =
             this.#tasksListService.getTasksListRender$.subscribe((value) => {
                 this.tasksLists.set(value);
