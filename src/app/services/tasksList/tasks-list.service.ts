@@ -52,7 +52,7 @@ export class TasksListService {
         if (getTasks) {
             this.#tasksList.next(getTasks);
 
-            if (this.#tasksFilterQuery()) {
+            if (this.#tasksFilterQuery() !== '') {
                 this.searchTasks(this.#tasksFilterQuery()!);
             } else {
                 this.#tasksListRender.next(getTasks);
