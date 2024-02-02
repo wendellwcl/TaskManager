@@ -26,6 +26,10 @@ export class TaskItemComponent {
     #router = inject(Router);
     #taskListService = inject(TasksListService);
 
+    //Get values of TaskPriority Enum
+    public taskPrioritiesValues = ETaskPriority;
+
+    //Task properties
     @Input({ required: true }) id!: number;
     @Input({ required: true }) creationDate!: string;
     @Input({ required: true }) title!: string;
@@ -34,12 +38,12 @@ export class TaskItemComponent {
     @Input({ required: true }) priority!: ETaskPriority;
     @Input() deadlineDate?: string | null;
 
-    public taskPrioritiesValues = ETaskPriority;
-
-    public handleUpdateTask(id: number) {
+    //Edit task
+    public handleEditTask(id: number) {
         this.#router.navigate([`/edit-task/${id}`]);
     }
 
+    //Delete task
     public handleDeleteTask(id: number) {
         this.#taskListService.deleteTask(id);
     }

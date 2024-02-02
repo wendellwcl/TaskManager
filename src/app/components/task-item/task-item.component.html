@@ -9,10 +9,12 @@
                 <mat-icon>done</mat-icon>
                 <span> Concluir </span>
             </button>
-            <button (click)="handleUpdateTask(id)" class="btn-update">
+
+            <button (click)="handleEditTask(id)" class="btn-edit">
                 <mat-icon>edit</mat-icon>
                 <span> Editar </span>
             </button>
+
             <button (click)="handleDeleteTask(id)" class="btn-delete">
                 <mat-icon>delete</mat-icon>
                 <span> Excluir </span>
@@ -26,7 +28,6 @@
             <p>{{ subject }}</p>
         </div>
         }
-
         <!---->
 
         @if(deadlineDate){
@@ -34,7 +35,6 @@
             <p>{{ deadlineDate | date }}</p>
         </div>
         }
-
         <!---->
 
         @if (priority === taskPrioritiesValues.HIGH) {
@@ -43,6 +43,8 @@
         </div>
         }
     </div>
+
+    <!---->
 
     @if(description){
     <div class="task-item-details">

@@ -1,5 +1,6 @@
 <section class="task-form-container">
     <h2 class="task-form-header">{{ this.headerText() }}</h2>
+
     <form
         class="task-form"
         [formGroup]="taskForm"
@@ -9,6 +10,7 @@
             <input
                 type="text"
                 id="title"
+                #inputField
                 #titleInput
                 class="input-field"
                 placeholder="Título"
@@ -26,6 +28,7 @@
             <input
                 type="text"
                 id="subject"
+                #inputField
                 class="input-field"
                 placeholder="Assunto"
                 autocomplete="off"
@@ -43,6 +46,7 @@
         <div class="input-container">
             <textarea
                 id="description"
+                #inputField
                 class="input-field"
                 placeholder="Descrição"
                 autocomplete="off"

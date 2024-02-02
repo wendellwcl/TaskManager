@@ -8,10 +8,12 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+//Interfaces
+import { ITask } from '@interfaces/task.interface';
+
 //Components
 import { DashboardHeaderComponent } from '@components/dashboard-header/dashboard-header.component';
 import { TaskListRenderComponent } from '@components/task-list-render/task-list-render.component';
-import { ITask } from '@interfaces/task.interface';
 
 //Services
 import { TasksListService } from '@services/tasksList/tasks-list.service';
@@ -31,15 +33,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
     public tasksLists = signal<ITask[] | null>(null);
 
     ngOnInit(): void {
-        this.#tasksListService.searchTasks('');
+        //Resetting the search on init, to ensure all tasks are displayed
+        this.#tasksListService.getTasksBySearch('');
 
+        //Subscribing to get the data from tasksListToRender
         this.#tasksListSubscription =
-            this.#tasksListService.getTasksListRender$.subscribe((value) => {
+            this.#tasksListService.getTasksListToRender$.subscribe((value) => {
                 this.tasksLists.set(value);
             });
     }
 
     ngOnDestroy(): void {
+        //Unsubscribing from tasksListToRender
         this.#tasksListSubscription?.unsubscribe();
     }
 }

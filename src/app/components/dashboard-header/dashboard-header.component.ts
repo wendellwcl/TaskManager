@@ -17,13 +17,15 @@ export class DashboardHeaderComponent {
     #router = inject(Router);
     #tasksListService = inject(TasksListService);
 
+    //Access page create task
     public handleCreateTask() {
         this.#router.navigate(['/create-task']);
     }
 
+    //Handle task search
     public searchTasks($event: KeyboardEvent) {
         const target = $event.target as HTMLInputElement;
         const query = target.value;
-        this.#tasksListService.searchTasks(query);
+        this.#tasksListService.getTasksBySearch(query);
     }
 }

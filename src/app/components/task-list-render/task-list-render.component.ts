@@ -21,9 +21,9 @@ import { TaskItemComponent } from '@components/task-item/task-item.component';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskListRenderComponent {
+    //List that will be rendered
     @Input({ required: true }) set inputListRender(value: ITask[] | null) {
-        this.tasksList.set(value);
+        this.listRender.set(value);
     }
-
-    public tasksList = signal<ITask[] | null>(null);
+    public listRender = signal<ITask[] | null>(null);
 }

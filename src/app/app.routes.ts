@@ -8,7 +8,7 @@ export const routes: Routes = [
     },
     {
         path: 'dashboard',
-        title: 'TaskManager',
+        title: 'Dashboard | Task Manager',
         loadComponent: () =>
             import('@pages/dashboard/dashboard.component').then(
                 (m) => m.DashboardComponent
@@ -16,7 +16,7 @@ export const routes: Routes = [
     },
     {
         path: 'create-task',
-        title: 'Criar tarefa',
+        title: 'Criar tarefa | Task Manager',
         loadComponent: () =>
             import('@components/task-form/task-form.component').then(
                 (m) => m.TaskFormComponent
@@ -24,7 +24,7 @@ export const routes: Routes = [
     },
     {
         path: 'edit-task/:id',
-        title: 'Editar',
+        title: 'Editar tarefa | Task Manager',
         loadComponent: () =>
             import('@components/task-form/task-form.component').then(
                 (m) => m.TaskFormComponent
@@ -32,7 +32,7 @@ export const routes: Routes = [
     },
     {
         path: 'deadline',
-        title: 'Vencimentos',
+        title: 'Vencimentos | Task Manager',
         loadComponent: () =>
             import('@pages/deadline/deadline.component').then(
                 (m) => m.DeadlineComponent
@@ -40,7 +40,7 @@ export const routes: Routes = [
     },
     {
         path: 'historic',
-        title: 'Histórico',
+        title: 'Histórico | Task Manager',
         loadComponent: () =>
             import('@pages/historic/historic.component').then(
                 (m) => m.HistoricComponent

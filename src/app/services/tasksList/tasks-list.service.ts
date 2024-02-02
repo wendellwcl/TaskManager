@@ -13,64 +13,54 @@ import { LocalStorageService } from '@services/localStorage/local-storage.servic
 export class TasksListService {
     #localStorageService = inject(LocalStorageService);
 
-    #tasksList = new BehaviorSubject<ITask[]>([]);
+    #tasksSearchString = signal<string | null>(null);
 
-    #tasksListRender = new BehaviorSubject<ITask[]>([]);
-    public getTasksListRender$ = this.#tasksListRender.asObservable();
+    #completeTasksList = new BehaviorSubject<ITask[]>([]);
 
-    #tasksFilterQuery = signal<string | null>(null);
+    #tasksListToRender = new BehaviorSubject<ITask[]>([]);
+    public getTasksListToRender$ = this.#tasksListToRender.asObservable();
 
-    public getTaskById(id: number | string) {
-        const taskId = Number(id);
+    constructor() {
+        //Get data and set lists
+        this.#setTasksLists();
 
-        const task = this.#tasksList.value.filter((task) => {
-            return task.id === taskId;
+        //Added event to window to update lists automatically when localStorage has any modifications
+        window.addEventListener('storage', () => {
+            this.#setTasksLists();
         });
-
-        return task[0];
     }
 
-    public searchTasks(query: string) {
-        if (!query) {
-            this.#tasksListRender.next(this.#tasksList.value);
-            this.#tasksFilterQuery.set(null);
-            return;
-        }
-
-        this.#tasksFilterQuery.set(query);
-        const regex = new RegExp(`^${query}`, 'i');
-        const filterTasks = this.#tasksList.value.filter((task) => {
-            return regex.test(task.title) || regex.test(task.subject!);
-        });
-
-        this.#tasksListRender.next(filterTasks);
-    }
-
-    #setTasksList() {
+    //Get data from localStorage and set / update the tasks lists
+    #setTasksLists() {
+        //Get taskList from localStorage
         const getTasks =
             this.#localStorageService.getLocalStorageItem('tasksList');
 
         if (getTasks) {
-            this.#tasksList.next(getTasks);
+            //Set / update the completeTasksList
+            this.#completeTasksList.next(getTasks);
 
-            if (this.#tasksFilterQuery()) {
-                this.searchTasks(this.#tasksFilterQuery()!);
+            //Set / update the tasksListToRender, checking if a search exists
+            if (this.#tasksSearchString()) {
+                this.getTasksBySearch(this.#tasksSearchString()!);
             } else {
-                this.#tasksListRender.next(getTasks);
+                this.#tasksListToRender.next(getTasks);
             }
         }
     }
 
+    //Add a new task to localStorage
     public addNewTaskToLocalStorage(newTask: ITask) {
-        const currentTasksList = this.#tasksList.value;
-        const updateTasksList = [...currentTasksList, newTask];
+        const currentTasksList = this.#completeTasksList.value;
+        const newTasksList = [...currentTasksList, newTask];
 
         this.#localStorageService.setLocalStorageItem(
             'tasksList',
-            updateTasksList
+            newTasksList
         );
     }
 
+    //Create a new task
     public createNewTask(taskValues: any) {
         const newTask: ITask = {
             id: new Date().getTime(),
@@ -85,8 +75,9 @@ export class TasksListService {
         this.addNewTaskToLocalStorage(newTask);
     }
 
+    //Update / edit a task
     public updateTask(id: number, taskValues: any) {
-        for (let task of this.#tasksList.value) {
+        for (let task of this.#completeTasksList.value) {
             if (task.id === id) {
                 task.title = taskValues.title;
                 task.subject = taskValues.subject;
@@ -98,28 +89,55 @@ export class TasksListService {
 
         this.#localStorageService.setLocalStorageItem(
             'tasksList',
-            this.#tasksList.value
+            this.#completeTasksList.value
         );
     }
 
+    //Delete a task
     public deleteTask(id: number) {
-        const updateTaskList = this.#tasksList.value?.filter((task) => {
-            return task.id !== id;
-        });
+        const modifiedTasksList = this.#completeTasksList.value.filter(
+            (task) => {
+                return task.id !== id;
+            }
+        );
 
         this.#localStorageService.setLocalStorageItem(
             'tasksList',
-            updateTaskList
+            modifiedTasksList
         );
-
-        this.#setTasksList();
     }
 
-    constructor() {
-        this.#setTasksList();
+    //Get task via ID
+    public getTaskById(id: number | string) {
+        const taskId = Number(id);
 
-        window.addEventListener('storage', () => {
-            this.#setTasksList();
+        const task = this.#completeTasksList.value.filter((task) => {
+            return task.id === taskId;
         });
+
+        return task[0];
+    }
+
+    //Search / get tasks that match the search
+    public getTasksBySearch(searchValue: string) {
+        //If there is no searchValue, set the tasksListToRender as a completeTasksList
+        //And reset the search string, to ensure the correct display of the tasksListToRender
+        if (!searchValue) {
+            this.#tasksListToRender.next(this.#completeTasksList.value);
+            this.#tasksSearchString.set(null);
+            return;
+        }
+
+        //Store the search value
+        this.#tasksSearchString.set(searchValue);
+
+        //Filter the tasks that match the search
+        const regex = new RegExp(`^${searchValue}`, 'i');
+        const filterTasks = this.#completeTasksList.value.filter((task) => {
+            return regex.test(task.title) || regex.test(task.subject!);
+        });
+
+        //Modify the tasksListToRender according to the search
+        this.#tasksListToRender.next(filterTasks);
     }
 }

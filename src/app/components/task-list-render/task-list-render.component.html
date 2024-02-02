@@ -1,5 +1,5 @@
 <section class="tasks-list-container">
-    @for (item of tasksList(); let i = $index; track i) {
+    @for (item of listRender(); let i = $index; track i) {
     <app-task-item
         [id]="item.id"
         [creationDate]="item.creationDate"
