@@ -7,13 +7,16 @@
     }
 
     .logo {
-        margin: 0;
-        margin-bottom: 4rem;
-        text-align: center;
+        height: var(--dashboard-header-height);
 
         a {
-            color: var(--color-primary);
-            font-size: 2.4rem;
+            display: flex;
+            place-content: center;
+
+            img {
+                width: 6.4rem;
+                aspect-ratio: 1/1;
+            }
         }
     }
 
