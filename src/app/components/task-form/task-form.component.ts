@@ -3,6 +3,7 @@ import {
     ChangeDetectionStrategy,
     Component,
     ElementRef,
+    OnDestroy,
     OnInit,
     QueryList,
     Input as RouterInput,
@@ -13,6 +14,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 //Enums
 import { ETaskPriority } from '@enums/task-priority.enum';
@@ -31,10 +33,11 @@ import { TasksListService } from '@services/tasksList/tasks-list.service';
     styleUrl: './task-form.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TaskFormComponent implements OnInit, AfterViewInit {
+export class TaskFormComponent implements OnInit, AfterViewInit, OnDestroy {
     #fb = inject(FormBuilder);
     #router = inject(Router);
     #tasksListService = inject(TasksListService);
+    #subjectsSubscription = new Subscription();
 
     @ViewChild('titleInput') titleInput!: ElementRef;
     @ViewChild('titleContainer') titleContainer!: ElementRef;
@@ -48,6 +51,7 @@ export class TaskFormComponent implements OnInit, AfterViewInit {
 
     public headerText = signal<string | null>(null);
     public btnText = signal<string | null>(null);
+    public tasksSubjectsList = signal<string[] | null>(null);
     public taskPriorities = ETaskPriority;
     #taskToUpdate = signal<ITask | null>(null);
 
@@ -64,6 +68,12 @@ export class TaskFormComponent implements OnInit, AfterViewInit {
             this.headerText.set('criar tarefa');
             this.btnText.set('criar');
         }
+
+        //Subscribing to get the data from tasksSubjectsList
+        this.#subjectsSubscription =
+            this.#tasksListService.getTasksSubjectsList$.subscribe((value) =>
+                this.tasksSubjectsList.set(value)
+            );
     }
 
     ngAfterViewInit(): void {
@@ -95,6 +105,11 @@ export class TaskFormComponent implements OnInit, AfterViewInit {
                 }
             });
         });
+    }
+
+    ngOnDestroy(): void {
+        //Unsubscribing from tasksSubjectsList
+        this.#subjectsSubscription.unsubscribe();
     }
 
     //Task form builder

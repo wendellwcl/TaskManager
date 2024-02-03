@@ -20,13 +20,18 @@ export class TasksListService {
     #tasksListToRender = new BehaviorSubject<ITask[]>([]);
     public getTasksListToRender$ = this.#tasksListToRender.asObservable();
 
+    #tasksSubjectsList = new BehaviorSubject<string[]>([]);
+    public getTasksSubjectsList$ = this.#tasksSubjectsList.asObservable();
+
     constructor() {
         //Get data and set lists
         this.#setTasksLists();
+        this.#setSubjectsList();
 
         //Added event to window to update lists automatically when localStorage has any modifications
         window.addEventListener('storage', () => {
             this.#setTasksLists();
+            this.#setSubjectsList();
         });
     }
 
@@ -47,6 +52,26 @@ export class TasksListService {
                 this.#tasksListToRender.next(getTasks);
             }
         }
+    }
+
+    //Set task subject list
+    #setSubjectsList() {
+        //Get subjects from all tasks
+        const tasksList = this.#completeTasksList.value;
+        const tasksSubjects = tasksList.map((task) => {
+            return task.subject;
+        });
+
+        //Manipulate the subject list to exclude duplicate values
+        const subjectsSet = new Set(
+            tasksSubjects.filter((subject) => {
+                return subject !== null;
+            })
+        );
+        const subjects = [...subjectsSet] as string[];
+
+        //Set tasks subjects list
+        this.#tasksSubjectsList.next(subjects);
     }
 
     //Add a new task to localStorage
