@@ -23,15 +23,20 @@ export class TasksListService {
     #tasksSubjectsList = new BehaviorSubject<string[]>([]);
     public getTasksSubjectsList$ = this.#tasksSubjectsList.asObservable();
 
+    #deadlineTasksList = new BehaviorSubject<ITask[]>([]);
+    public getDeadlineTasksList$ = this.#deadlineTasksList.asObservable();
+
     constructor() {
         //Get data and set lists
         this.#setTasksLists();
         this.#setSubjectsList();
+        this.#setDeadlineList();
 
         //Added event to window to update lists automatically when localStorage has any modifications
         window.addEventListener('storage', () => {
             this.#setTasksLists();
             this.#setSubjectsList();
+            this.#setDeadlineList();
         });
     }
 
@@ -72,6 +77,20 @@ export class TasksListService {
 
         //Set tasks subjects list
         this.#tasksSubjectsList.next(subjects);
+    }
+
+    //Set deadline tasks list
+    #setDeadlineList() {
+        //Get and format actual date
+        const actualDate = new Date().toISOString().split('T')[0];
+
+        //Checking and filtering task deadlines
+        const deadlineTasks = this.#completeTasksList.value.filter((task) => {
+            return task.deadlineDate == actualDate;
+        });
+
+        //Set deadline tasks list
+        this.#deadlineTasksList.next(deadlineTasks);
     }
 
     //Add a new task to localStorage
