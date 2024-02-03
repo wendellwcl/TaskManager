@@ -33,9 +33,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     public tasksLists = signal<ITask[] | null>(null);
 
     ngOnInit(): void {
-        //Resetting the search on init, to ensure all tasks are displayed
-        this.#tasksListService.getTasksBySearch('');
-
         //Subscribing to get the data from tasksListToRender
         this.#tasksListSubscription =
             this.#tasksListService.getTasksListToRender$.subscribe((value) => {
@@ -46,5 +43,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         //Unsubscribing from tasksListToRender
         this.#tasksListSubscription?.unsubscribe();
+
+        //Resetting the search on destroy, to ensure no unwanted behavior is caused
+        this.#tasksListService.getTasksBySearch('');
     }
 }
