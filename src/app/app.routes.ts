@@ -54,4 +54,12 @@ export const routes: Routes = [
                 (m) => m.AboutComponent
             ),
     },
+    {
+        path: '**',
+        title: '404 | Task Manager',
+        loadComponent: () =>
+            import('@pages/not-found/not-found.component').then(
+                (m) => m.NotFoundComponent
+            ),
+    },
 ];
