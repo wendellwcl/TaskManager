@@ -46,4 +46,12 @@ export const routes: Routes = [
                 (m) => m.HistoricComponent
             ),
     },
+    {
+        path: 'about',
+        title: 'Sobre | Task Manager',
+        loadComponent: () =>
+            import('@pages/about/about.component').then(
+                (m) => m.AboutComponent
+            ),
+    },
 ];
