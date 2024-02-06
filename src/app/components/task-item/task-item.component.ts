@@ -10,6 +10,7 @@ import { Router, RouterLink } from '@angular/router';
 
 //Enums
 import { ETaskPriority } from '@enums/task-priority.enum';
+import { ETaskStatus } from '@enums/task-status.enum';
 
 //Interfaces
 import { ITask } from '@interfaces/task.interface';
@@ -29,8 +30,9 @@ export class TaskItemComponent {
     #router = inject(Router);
     #taskListService = inject(TasksListService);
 
-    //Get values of TaskPriority Enum
+    //Get values of Enum
     public taskPrioritiesValues = ETaskPriority;
+    public taskStatusValues = ETaskStatus;
 
     //Task
     @Input({ required: true }) task!: ITask;

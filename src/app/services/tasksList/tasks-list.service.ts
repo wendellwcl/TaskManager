@@ -4,6 +4,9 @@ import { BehaviorSubject } from 'rxjs';
 //Interfaces
 import { ITask } from '@interfaces/task.interface';
 
+//Enums
+import { ETaskStatus } from '@enums/task-status.enum';
+
 //Services
 import { LocalStorageService } from '@services/localStorage/local-storage.service';
 
@@ -26,18 +29,25 @@ export class TasksListService {
     #deadlineTasksList = new BehaviorSubject<ITask[]>([]);
     public getDeadlineTasksList$ = this.#deadlineTasksList.asObservable();
 
+    #tasksHistoric = new BehaviorSubject<ITask[]>([]);
+    public getTasksHistoric$ = this.#tasksHistoric.asObservable();
+
     constructor() {
         //Get data and set lists
-        this.#setTasksLists();
-        this.#setSubjectsList();
-        this.#setDeadlineList();
+        this.#setAllLists();
 
         //Added event to window to update lists automatically when localStorage has any modifications
         window.addEventListener('storage', () => {
-            this.#setTasksLists();
-            this.#setSubjectsList();
-            this.#setDeadlineList();
+            this.#setAllLists();
         });
+    }
+
+    //Get data and set lists
+    #setAllLists() {
+        this.#setTasksLists();
+        this.#setSubjectsList();
+        this.#setDeadlineList();
+        this.#setHistoricList();
     }
 
     //Get data from localStorage and set / update the tasks lists
@@ -93,6 +103,18 @@ export class TasksListService {
         this.#deadlineTasksList.next(deadlineTasks);
     }
 
+    //Set tasks historic
+    #setHistoricList() {
+        //Get tasks historic data
+        const getHistoric =
+            this.#localStorageService.getLocalStorageItem('tasksHistoric');
+
+        //Set tasks historic data
+        if (getHistoric) {
+            this.#tasksHistoric.next(getHistoric);
+        }
+    }
+
     //Add a new task to localStorage
     public addNewTaskToLocalStorage(newTask: ITask) {
         const currentTasksList = this.#completeTasksList.value;
@@ -114,6 +136,7 @@ export class TasksListService {
             priority: taskValues.priority,
             deadlineDate: taskValues.deadlineDate,
             creationDate: new Date().toISOString().split('T')[0],
+            status: ETaskStatus.PENDING,
         };
 
         this.addNewTaskToLocalStorage(newTask);
@@ -137,18 +160,62 @@ export class TasksListService {
         );
     }
 
-    //Delete a task
-    public deleteTask(id: number) {
-        const modifiedTasksList = this.#completeTasksList.value.filter(
-            (task) => {
-                return task.id !== id;
-            }
-        );
+    //Delete task from a specific localStorage
+    #deleteTask(id: number, local: string) {
+        const list = this.#localStorageService.getLocalStorageItem(local);
+        const modifiedList = list.filter((task: ITask) => {
+            return task.id !== id;
+        });
 
-        this.#localStorageService.setLocalStorageItem(
-            'tasksList',
-            modifiedTasksList
-        );
+        this.#localStorageService.setLocalStorageItem(local, modifiedList);
+    }
+
+    //Swap a task's storage location
+    #swapTaskLocal(
+        id: number,
+        fromLocal: string,
+        toLocal: string,
+        modifiedTask?: ITask
+    ) {
+        //Get task data
+        const task = this.getTaskById(id);
+
+        //Get target location data, add task and save changes
+        const list =
+            this.#localStorageService.getLocalStorageItem(toLocal) || [];
+        if (modifiedTask) {
+            this.#localStorageService.setLocalStorageItem(toLocal, [
+                ...list,
+                modifiedTask,
+            ]);
+        } else {
+            this.#localStorageService.setLocalStorageItem(toLocal, [
+                ...list,
+                task,
+            ]);
+        }
+
+        //Delete task from original location
+        this.#deleteTask(id, fromLocal);
+    }
+
+    public completeOrDeleteTask(id: number, action: 'complete' | 'delete') {
+        //Get task data
+        const task = this.getTaskById(id);
+
+        //Modify task status based on action and swap storage location
+        switch (action) {
+            case 'complete':
+                task.status = ETaskStatus.COMPLETED;
+                this.#swapTaskLocal(id, 'tasksList', 'tasksHistoric', task);
+                break;
+            case 'delete':
+                task.status = ETaskStatus.DELETED;
+                this.#swapTaskLocal(id, 'tasksList', 'tasksHistoric', task);
+                break;
+            default:
+                break;
+        }
     }
 
     //Get task via ID

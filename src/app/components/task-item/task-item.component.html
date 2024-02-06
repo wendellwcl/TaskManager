@@ -1,10 +1,22 @@
 <li class="task-item">
+    @if (task.status !== taskStatusValues.PENDING) {
+    <div class="task-status-container">
+        @if (task.status === taskStatusValues.COMPLETED) {
+        <p class="task-status completed">realizada</p>
+        } @else if (task.status === taskStatusValues.DELETED) {
+        <p class="task-status deleted">excluída</p>
+        }
+    </div>
+    }
+
     <div class="task-item-header">
         <p class="task-title">
             {{ task.title }}
         </p>
 
         <div class="task-actions">
+            @if (task.status === taskStatusValues.PENDING) {
+
             <button
                 (click)="handleCompleteOrDeleteTask(task.id, 'complete')"
                 class="btn-conclude"
@@ -25,6 +37,17 @@
                 <mat-icon>delete</mat-icon>
                 <span> Excluir </span>
             </button>
+
+            } @else {
+            <button
+                (click)="handleCompleteOrDeleteTask(task.id, 'delete')"
+                class="btn-restore"
+            >
+                <mat-icon>cached</mat-icon>
+                <span> Restaurar </span>
+            </button>
+
+            }
         </div>
     </div>
 

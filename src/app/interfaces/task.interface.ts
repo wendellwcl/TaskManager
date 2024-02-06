@@ -1,5 +1,6 @@
 //Enums
 import { ETaskPriority } from '@enums/task-priority.enum';
+import { ETaskStatus } from '@enums/task-status.enum';
 
 export interface ITask {
     id: number;
@@ -9,4 +10,5 @@ export interface ITask {
     description: string | null;
     priority: ETaskPriority;
     deadlineDate: string | null;
+    status: ETaskStatus;
 }

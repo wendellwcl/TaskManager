@@ -11,6 +11,30 @@
         }
     }
 
+    .task-status {
+        font-size: 1.4rem;
+        font-weight: bold;
+        text-transform: capitalize;
+        padding-left: 1.2rem;
+        position: relative;
+
+        &.completed {
+            color: var(--color-success);
+        }
+
+        &.deleted {
+            color: var(--color-danger);
+        }
+
+        &::before {
+            content: "⦁";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
+
     .task-item-header {
         display: flex;
         align-items: center;
@@ -48,7 +72,8 @@
                 }
             }
 
-            &.btn-edit {
+            &.btn-edit,
+            &.btn-restore {
                 &:hover {
                     background: var(--color-info);
                 }
