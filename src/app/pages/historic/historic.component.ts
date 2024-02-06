@@ -6,6 +6,7 @@ import {
     inject,
     signal,
 } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
 
 //Components
@@ -20,7 +21,7 @@ import { TasksListService } from '@services/tasksList/tasks-list.service';
 @Component({
     selector: 'app-historic',
     standalone: true,
-    imports: [TaskListRenderComponent],
+    imports: [TaskListRenderComponent, MatIconModule],
     templateUrl: './historic.component.html',
     styleUrl: './historic.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -42,5 +43,10 @@ export class HistoricComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         //Unsubscribing from tasksHistoric
         this.#historicSubscription.unsubscribe();
+    }
+
+    //Clear the history
+    public handleClearHistory() {
+        this.#tasksListService.clearHistory();
     }
 }

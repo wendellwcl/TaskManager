@@ -229,6 +229,11 @@ export class TasksListService {
         this.#swapTaskLocal(id, 'tasksHistoric', 'tasksList', task);
     }
 
+    //Clear the history
+    public clearHistory() {
+        this.#localStorageService.setLocalStorageItem('tasksHistoric', []);
+    }
+
     //Get task via ID
     public getTaskById(id: number | string) {
         const taskId = Number(id);
