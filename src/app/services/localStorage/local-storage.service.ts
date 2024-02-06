@@ -7,7 +7,7 @@ export class LocalStorageService {
     //Event triggered after modifications to localStorage
     public storageEvent = new Event('storage');
 
-    //get data from localStorage and convert it
+    //Get data from localStorage and convert it
     public getLocalStorageItem(name: string) {
         const res = localStorage.getItem(name);
         return res ? JSON.parse(res) : null;

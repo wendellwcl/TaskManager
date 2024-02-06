@@ -199,6 +199,7 @@ export class TasksListService {
         this.#deleteTask(id, fromLocal);
     }
 
+    //Handle the action of completing or deleting a task
     public completeOrDeleteTask(id: number, action: 'complete' | 'delete') {
         //Get task data
         const task = this.getTaskById(id);
@@ -218,13 +219,29 @@ export class TasksListService {
         }
     }
 
+    //Restore a task from history
+    public restoreTask(id: number) {
+        //Get task data and modifing status
+        const task = this.getTaskById(id);
+        task.status = ETaskStatus.PENDING;
+
+        //Swap storage location
+        this.#swapTaskLocal(id, 'tasksHistoric', 'tasksList', task);
+    }
+
     //Get task via ID
     public getTaskById(id: number | string) {
         const taskId = Number(id);
 
-        const task = this.#completeTasksList.value.filter((task) => {
+        let task = this.#completeTasksList.value.filter((task) => {
             return task.id === taskId;
         });
+
+        if (task.length === 0) {
+            task = this.#tasksHistoric.value.filter((task) => {
+                return task.id === taskId;
+            });
+        }
 
         return task[0];
     }

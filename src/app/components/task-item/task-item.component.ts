@@ -42,10 +42,15 @@ export class TaskItemComponent {
         this.#router.navigate([`/edit-task/${id}`]);
     }
 
+    //Handle the action of completing or deleting a task
     public handleCompleteOrDeleteTask(
         id: number,
         action: 'complete' | 'delete'
     ) {
         this.#taskListService.completeOrDeleteTask(id, action);
+    }
+
+    public handleRestore(id: number) {
+        this.#taskListService.restoreTask(id);
     }
 }

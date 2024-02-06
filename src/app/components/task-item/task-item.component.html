@@ -39,10 +39,7 @@
             </button>
 
             } @else {
-            <button
-                (click)="handleCompleteOrDeleteTask(task.id, 'delete')"
-                class="btn-restore"
-            >
+            <button (click)="handleRestore(task.id)" class="btn-restore">
                 <mat-icon>cached</mat-icon>
                 <span> Restaurar </span>
             </button>
