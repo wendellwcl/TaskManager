@@ -1,21 +1,27 @@
 <li class="task-item">
     <div class="task-item-header">
         <p class="task-title">
-            {{ title }}
+            {{ task.title }}
         </p>
 
         <div class="task-actions">
-            <button (click)="handleDeleteTask(id)" class="btn-conclude">
+            <button
+                (click)="handleCompleteOrDeleteTask(task.id, 'complete')"
+                class="btn-conclude"
+            >
                 <mat-icon>done</mat-icon>
                 <span> Concluir </span>
             </button>
 
-            <button (click)="handleEditTask(id)" class="btn-edit">
+            <button (click)="handleEditTask(task.id)" class="btn-edit">
                 <mat-icon>edit</mat-icon>
                 <span> Editar </span>
             </button>
 
-            <button (click)="handleDeleteTask(id)" class="btn-delete">
+            <button
+                (click)="handleCompleteOrDeleteTask(task.id, 'delete')"
+                class="btn-delete"
+            >
                 <mat-icon>delete</mat-icon>
                 <span> Excluir </span>
             </button>
@@ -23,35 +29,35 @@
     </div>
 
     <div class="task-infos">
-        @if(subject){
+        @if(task.subject){
         <div class="task-subject">
-            <p>{{ subject }}</p>
+            <p>{{ task.subject }}</p>
         </div>
         }
         <!---->
 
-        @if(deadlineDate){
+        @if(task.deadlineDate){
         <div class="task-deadlineDate">
-            <p>{{ deadlineDate | date }}</p>
+            <p>{{ task.deadlineDate | date }}</p>
         </div>
         }
         <!---->
 
-        @if (priority === taskPrioritiesValues.HIGH) {
+        @if (task.priority === taskPrioritiesValues.HIGH) {
         <div class="task-priority">
-            <p>Prioridade {{ priority }}</p>
+            <p>Prioridade {{ task.priority }}</p>
         </div>
         }
     </div>
 
     <!---->
 
-    @if(description){
+    @if(task.description){
     <div class="task-item-details">
         <details>
             <summary>Ver descrição</summary>
             <p>
-                {{ description }}
+                {{ task.description }}
             </p>
         </details>
     </div>

@@ -1,14 +1,6 @@
 <section class="tasks-list-container">
     @for (item of listRender(); let i = $index; track i) {
-    <app-task-item
-        [id]="item.id"
-        [creationDate]="item.creationDate"
-        [title]="item.title"
-        [subject]="item.subject"
-        [description]="item.description"
-        [priority]="item.priority"
-        [deadlineDate]="item.deadlineDate"
-    />
+    <app-task-item [task]="item" />
     } @empty {
     <div class="tasks-list-empty">
         <p>Sem tarefas.</p>

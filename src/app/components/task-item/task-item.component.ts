@@ -11,6 +11,9 @@ import { Router, RouterLink } from '@angular/router';
 //Enums
 import { ETaskPriority } from '@enums/task-priority.enum';
 
+//Interfaces
+import { ITask } from '@interfaces/task.interface';
+
 //Services
 import { TasksListService } from '@services/tasksList/tasks-list.service';
 
@@ -29,22 +32,18 @@ export class TaskItemComponent {
     //Get values of TaskPriority Enum
     public taskPrioritiesValues = ETaskPriority;
 
-    //Task properties
-    @Input({ required: true }) id!: number;
-    @Input({ required: true }) creationDate!: string;
-    @Input({ required: true }) title!: string;
-    @Input() subject?: string | null;
-    @Input() description?: string | null;
-    @Input({ required: true }) priority!: ETaskPriority;
-    @Input() deadlineDate?: string | null;
+    //Task
+    @Input({ required: true }) task!: ITask;
 
     //Edit task
     public handleEditTask(id: number) {
         this.#router.navigate([`/edit-task/${id}`]);
     }
 
-    //Delete task
-    public handleDeleteTask(id: number) {
-        this.#taskListService.deleteTask(id);
+    public handleCompleteOrDeleteTask(
+        id: number,
+        action: 'complete' | 'delete'
+    ) {
+        this.#taskListService.completeOrDeleteTask(id, action);
     }
 }
