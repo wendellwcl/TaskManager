@@ -1,9 +1,4 @@
-@use "./_measures";
-
-app-root {
-    display: grid;
-    grid-template-columns: 240px auto;
-
+:host {
     .outlet-container {
         position: relative;
         width: calc(100vw - var(--nav-width));

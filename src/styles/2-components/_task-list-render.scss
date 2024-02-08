@@ -1,0 +1,14 @@
+:host {
+    .tasks-list-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        width: 100%;
+        height: calc(100% - var(--header-height));
+        padding: 3.2rem;
+    }
+
+    .tasks-list-empty {
+        text-align: center;
+    }
+}

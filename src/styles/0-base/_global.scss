@@ -1,10 +1,12 @@
-@use "./_reset";
-@use "./_typography";
-
 html,
 body,
 app-root {
     background-color: var(--color-black);
     width: 100vw;
     min-height: 100dvh;
+}
+
+app-root {
+    display: grid;
+    grid-template-columns: 240px auto;
 }

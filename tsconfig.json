@@ -9,7 +9,9 @@
             "@pages/*": ["app/pages/*"],
             "@interfaces/*": ["app/interfaces/*"],
             "@enums/*": ["app/enums/*"],
-            "@services/*": ["app/services/*"]
+            "@services/*": ["app/services/*"],
+            "@pagesStyles/*": ["styles/1-pages/*"],
+            "@componentsStyles/*": ["styles/2-components/*"]
         },
         "forceConsistentCasingInFileNames": true,
         "strict": true,

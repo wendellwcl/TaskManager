@@ -1,6 +1,1 @@
-:host {
-    .dashboard-container {
-        height: 100%;
-        overflow-y: scroll;
-    }
-}
+@use "@pagesStyles/_dashboard.scss";
