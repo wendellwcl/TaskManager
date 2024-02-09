@@ -48,6 +48,8 @@
         </div>
     </div>
 
+    @if (task.subject || task.deadlineDate || task.priority ===
+    taskPrioritiesValues.HIGH) {
     <div class="task-infos">
         @if(task.subject){
         <div class="task-subject">
@@ -69,6 +71,7 @@
         </div>
         }
     </div>
+    }
 
     <!---->
 

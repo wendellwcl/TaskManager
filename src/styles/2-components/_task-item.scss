@@ -1,6 +1,7 @@
 :host {
     .task-item {
-        padding: 0.8rem 1.6rem;
+        width: 100%;
+        padding: var(--rem-sm) var(--rem-md);
         background: var(--color-black-010);
         border: 2px solid var(--color-black);
         border-radius: 5px;
@@ -17,6 +18,10 @@
         text-transform: capitalize;
         padding-left: 1.2rem;
         position: relative;
+
+        @media screen and (max-width: 768px) {
+            font-size: 1.2rem;
+        }
 
         &.completed {
             color: var(--color-success);
@@ -45,6 +50,10 @@
         font-size: 1.8rem;
         font-weight: bold;
         text-transform: capitalize;
+
+        @media screen and (max-width: 768px) {
+            font-size: 1.6rem;
+        }
     }
 
     .task-actions {
@@ -54,7 +63,7 @@
             padding: 0.4rem;
             display: flex;
             align-items: center;
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: var(--color-black);
             border: none;
             border-radius: 5px;
@@ -63,7 +72,7 @@
             transition: all 0.3s;
 
             &:not(:last-child) {
-                margin-right: 0.8rem;
+                margin-right: var(--rem-sm);
             }
 
             &.btn-conclude {
@@ -105,6 +114,12 @@
     .task-infos {
         display: flex;
         gap: 2.4rem;
+        margin-top: var(--rem-sm);
+
+        @media screen and (max-width: 768px) {
+            flex-direction: column;
+            gap: var(--rem-sm);
+        }
 
         > *:not(:last-child) {
             &::after {
@@ -112,6 +127,10 @@
                 position: absolute;
                 right: -1.4rem;
                 top: 0;
+
+                @media screen and (max-width: 768px) {
+                    display: none;
+                }
             }
         }
     }
@@ -124,10 +143,14 @@
         font-size: 1.4rem;
         font-weight: bold;
         position: relative;
+
+        @media screen and (max-width: 768px) {
+            font-size: 1.2rem;
+        }
     }
 
     .task-item-details {
-        margin-top: 0.8rem;
+        margin-top: var(--rem-md);
         font-size: 1.4rem;
 
         summary {

@@ -1,23 +1,31 @@
+@import "../3-helpers/mixins";
+
 :host {
     .dashboard-header {
+        width: 100%;
+        height: var(--header-height);
         position: sticky;
         top: 0;
         display: grid;
         grid-template-columns: 1fr auto;
         place-content: center;
-        width: 100%;
-        height: var(--header-height);
-        padding: 0 3.6rem;
+        gap: var(--rem-lg);
+        padding: 0 var(--rem-lg);
         background: var(--color-black);
         z-index: 1;
+
+        @media screen and (max-width: 768px) {
+            gap: 0;
+            grid-template-columns: 1fr;
+        }
     }
 
     .search-input {
-        justify-self: center;
         display: block;
         width: 100%;
         max-width: 540px;
-        padding: 0.8rem 1.6rem;
+        justify-self: center;
+        padding: var(--rem-sm) var(--rem-md);
         border: 1px solid var(--color-secondary);
         border-radius: 2rem;
         background-color: var(--color-black-010);
@@ -30,18 +38,10 @@
     }
 
     .btn-create-task {
-        display: flex;
-        align-items: center;
-        padding: 0.8rem;
-        border: none;
-        border-radius: 5px;
-        background: var(--color-primary);
-        color: var(--color-black-010);
-        font-weight: bold;
-        cursor: pointer;
+        @include btn-default;
 
-        &:hover {
-            background: var(--color-primary-010);
+        @media screen and (max-width: 768px) {
+            display: none;
         }
     }
 }

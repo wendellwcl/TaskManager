@@ -1,5 +1,8 @@
+@import "../3-helpers/mixins";
+
 :host {
     .historic-container {
+        width: 100%;
         height: 100%;
         overflow-y: scroll;
     }
@@ -10,29 +13,28 @@
         display: grid;
         grid-template-columns: 1fr auto;
         place-content: center;
-        padding: 0 3.6rem;
-        font-size: 2.4rem;
+        padding: var(--rem-md);
         color: var(--color-primary);
 
         > * {
             justify-self: center;
         }
 
-        button {
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-            padding: 0.8rem;
-            border: none;
-            border-radius: 5px;
-            background: var(--color-primary);
-            color: var(--color-black-010);
-            font-weight: bold;
-            cursor: pointer;
-
-            &:hover {
-                background: var(--color-primary-010);
-            }
+        h3 {
+            font-size: var(--title-size);
         }
+    }
+
+    .btn-clear-container {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--rem-md);
+    }
+
+    .btn-clear {
+        @include btn-default;
+        width: 100%;
     }
 }

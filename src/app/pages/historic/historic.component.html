@@ -1,10 +1,16 @@
 <section class="historic-container">
     <div class="historic-header">
         <h3>Histórico</h3>
-        <button (click)="handleClearHistory()">
+    </div>
+
+    @if(tasksHistoric()!.length > 0){
+    <div class="btn-clear-container">
+        <button class="btn-clear" (click)="handleClearHistory()">
             <mat-icon>delete</mat-icon>
             Limpar histórico
         </button>
     </div>
+    }
+
     <app-task-list-render [inputListRender]="tasksHistoric()" />
 </section>
