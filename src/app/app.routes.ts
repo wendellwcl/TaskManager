@@ -18,17 +18,13 @@ export const routes: Routes = [
         path: 'create-task',
         title: 'Criar tarefa | Task Manager',
         loadComponent: () =>
-            import('@components/task-form/task-form.component').then(
-                (m) => m.TaskFormComponent
-            ),
+            import('@pages/form/form.component').then((m) => m.FormComponent),
     },
     {
         path: 'edit-task/:id',
         title: 'Editar tarefa | Task Manager',
         loadComponent: () =>
-            import('@components/task-form/task-form.component').then(
-                (m) => m.TaskFormComponent
-            ),
+            import('@pages/form/form.component').then((m) => m.FormComponent),
     },
     {
         path: 'deadline',

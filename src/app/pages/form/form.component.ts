@@ -14,26 +14,20 @@ import {
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ETaskPriority } from '@enums/task-priority.enum';
+import { ITask } from '@interfaces/task.interface';
+import { TasksListService } from '@services/tasksList/tasks-list.service';
 import { Subscription } from 'rxjs';
 
-//Enums
-import { ETaskPriority } from '@enums/task-priority.enum';
-
-//Interfaces
-import { ITask } from '@interfaces/task.interface';
-
-//Services
-import { TasksListService } from '@services/tasksList/tasks-list.service';
-
 @Component({
-    selector: 'app-task-form',
+    selector: 'app-form',
     standalone: true,
     imports: [ReactiveFormsModule],
-    templateUrl: './task-form.component.html',
-    styleUrl: './task-form.component.scss',
+    templateUrl: './form.component.html',
+    styleUrl: './form.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TaskFormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
     #formBuilder = inject(FormBuilder);
     #router = inject(Router);
     #tasksList = inject(TasksListService);
