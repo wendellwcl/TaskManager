@@ -39,7 +39,7 @@
             />
             <label for="subject" class="label"> Assunto </label>
             <datalist id="subjectsDataList">
-                @for (subject of tasksSubjectsList(); track $index) {
+                @for (subject of tasksSubjects(); track $index) {
                 <option value="{{ subject }}"></option>
                 }
             </datalist>

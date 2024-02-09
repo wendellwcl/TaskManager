@@ -3,7 +3,7 @@
         <h3>Histórico</h3>
     </div>
 
-    @if(tasksHistoric()!.length > 0){
+    @if(tasksHistory()!.length > 0){
     <div class="btn-clear-container">
         <button class="btn-clear" (click)="handleClearHistory()">
             <mat-icon>delete</mat-icon>
@@ -12,5 +12,5 @@
     </div>
     }
 
-    <app-task-list-render [inputListRender]="tasksHistoric()" />
+    <app-task-list-render [inputListRender]="tasksHistory()" />
 </section>

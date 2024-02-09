@@ -34,9 +34,9 @@ import { TasksListService } from '@services/tasksList/tasks-list.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskFormComponent implements OnInit, AfterViewInit, OnDestroy {
-    #fb = inject(FormBuilder);
+    #formBuilder = inject(FormBuilder);
     #router = inject(Router);
-    #tasksListService = inject(TasksListService);
+    #tasksList = inject(TasksListService);
     #subjectsSubscription = new Subscription();
 
     @ViewChild('titleInput') titleInput!: ElementRef;
@@ -51,7 +51,7 @@ export class TaskFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public headerText = signal<string | null>(null);
     public btnText = signal<string | null>(null);
-    public tasksSubjectsList = signal<string[] | null>(null);
+    public tasksSubjects = signal<string[] | null>(null);
     public taskPriorities = ETaskPriority;
     #taskToUpdate = signal<ITask | null>(null);
 
@@ -59,7 +59,7 @@ export class TaskFormComponent implements OnInit, AfterViewInit, OnDestroy {
         //If has the id property, get data from the respective task to update / edit
         //Else clear the task form
         if (this.getId()) {
-            const task = this.#tasksListService.getTaskById(this.getId()!);
+            const task = this.#tasksList.getTaskById(this.getId()!);
             this.#taskToUpdate.set(task);
             this.headerText.set('Editar tarefa');
             this.btnText.set('salvar');
@@ -69,10 +69,10 @@ export class TaskFormComponent implements OnInit, AfterViewInit, OnDestroy {
             this.btnText.set('criar');
         }
 
-        //Subscribing to get the data from tasksSubjectsList
+        //Subscribing to get the data from tasksSubjects
         this.#subjectsSubscription =
-            this.#tasksListService.getTasksSubjectsList$.subscribe((value) =>
-                this.tasksSubjectsList.set(value)
+            this.#tasksList.getTasksSubjects$.subscribe((value) =>
+                this.tasksSubjects.set(value)
             );
     }
 
@@ -108,12 +108,12 @@ export class TaskFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        //Unsubscribing from tasksSubjectsList
+        //Unsubscribing from tasksSubjects
         this.#subjectsSubscription.unsubscribe();
     }
 
     //Task form builder
-    public taskForm = this.#fb.group<any>({
+    public taskForm = this.#formBuilder.group<any>({
         title: [null, [Validators.required]],
         subject: [null],
         description: [null],
@@ -145,12 +145,12 @@ export class TaskFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     //Create task
     #handleCreateTask() {
-        this.#tasksListService.createNewTask(this.taskForm.value);
+        this.#tasksList.createNewTask(this.taskForm.value);
     }
 
     //Update task
     #handleUpdateTask() {
-        this.#tasksListService.updateTask(
+        this.#tasksList.updateTask(
             this.#taskToUpdate()!.id,
             this.taskForm.value
         );

@@ -14,23 +14,23 @@ import { LocalStorageService } from '@services/localStorage/local-storage.servic
     providedIn: 'root',
 })
 export class TasksListService {
-    #localStorageService = inject(LocalStorageService);
+    #localStorage = inject(LocalStorageService);
 
-    #tasksSearchString = signal<string | null>(null);
+    #searchString = signal<string | null>(null);
 
-    #completeTasksList = new BehaviorSubject<ITask[]>([]);
+    #fullList = new BehaviorSubject<ITask[]>([]);
 
-    #tasksListToRender = new BehaviorSubject<ITask[]>([]);
-    public getTasksListToRender$ = this.#tasksListToRender.asObservable();
+    #listToRender = new BehaviorSubject<ITask[]>([]);
+    public getListToRender$ = this.#listToRender.asObservable();
 
-    #tasksSubjectsList = new BehaviorSubject<string[]>([]);
-    public getTasksSubjectsList$ = this.#tasksSubjectsList.asObservable();
+    #tasksSubjects = new BehaviorSubject<string[]>([]);
+    public getTasksSubjects$ = this.#tasksSubjects.asObservable();
 
-    #deadlineTasksList = new BehaviorSubject<ITask[]>([]);
-    public getDeadlineTasksList$ = this.#deadlineTasksList.asObservable();
+    #deadlineTasks = new BehaviorSubject<ITask[]>([]);
+    public getDeadlineTasks$ = this.#deadlineTasks.asObservable();
 
-    #tasksHistoric = new BehaviorSubject<ITask[]>([]);
-    public getTasksHistoric$ = this.#tasksHistoric.asObservable();
+    #tasksHistory = new BehaviorSubject<ITask[]>([]);
+    public getTasksHistory$ = this.#tasksHistory.asObservable();
 
     constructor() {
         //Get data and set lists
@@ -45,34 +45,33 @@ export class TasksListService {
     //Get data and set lists
     #setAllLists() {
         this.#setTasksLists();
-        this.#setSubjectsList();
-        this.#setDeadlineList();
-        this.#setHistoricList();
+        this.#setTasksSubjects();
+        this.#setDeadlineTasks();
+        this.#setTasksHistory();
     }
 
     //Get data from localStorage and set / update the tasks lists
     #setTasksLists() {
         //Get taskList from localStorage
-        const getTasks =
-            this.#localStorageService.getLocalStorageItem('tasksList');
+        const getTasks = this.#localStorage.getLocalStorageItem('tasksList');
 
         if (getTasks) {
             //Set / update the completeTasksList
-            this.#completeTasksList.next(getTasks);
+            this.#fullList.next(getTasks);
 
             //Set / update the tasksListToRender, checking if a search exists
-            if (this.#tasksSearchString()) {
-                this.getTasksBySearch(this.#tasksSearchString()!);
+            if (this.#searchString()) {
+                this.getTasksBySearch(this.#searchString()!);
             } else {
-                this.#tasksListToRender.next(getTasks);
+                this.#listToRender.next(getTasks);
             }
         }
     }
 
     //Set task subject list
-    #setSubjectsList() {
+    #setTasksSubjects() {
         //Get subjects from all tasks
-        const tasksList = this.#completeTasksList.value;
+        const tasksList = this.#fullList.value;
         const tasksSubjects = tasksList.map((task) => {
             return task.subject;
         });
@@ -86,44 +85,41 @@ export class TasksListService {
         const subjects = [...subjectsSet] as string[];
 
         //Set tasks subjects list
-        this.#tasksSubjectsList.next(subjects);
+        this.#tasksSubjects.next(subjects);
     }
 
     //Set deadline tasks list
-    #setDeadlineList() {
+    #setDeadlineTasks() {
         //Get and format actual date
         const actualDate = new Date().toISOString().split('T')[0];
 
         //Checking and filtering task deadlines
-        const deadlineTasks = this.#completeTasksList.value.filter((task) => {
+        const deadlineTasks = this.#fullList.value.filter((task) => {
             return task.deadlineDate == actualDate;
         });
 
         //Set deadline tasks list
-        this.#deadlineTasksList.next(deadlineTasks);
+        this.#deadlineTasks.next(deadlineTasks);
     }
 
     //Set tasks historic
-    #setHistoricList() {
+    #setTasksHistory() {
         //Get tasks historic data
         const getHistoric =
-            this.#localStorageService.getLocalStorageItem('tasksHistoric');
+            this.#localStorage.getLocalStorageItem('tasksHistoric');
 
         //Set tasks historic data
         if (getHistoric) {
-            this.#tasksHistoric.next(getHistoric);
+            this.#tasksHistory.next(getHistoric);
         }
     }
 
     //Add a new task to localStorage
     public addNewTaskToLocalStorage(newTask: ITask) {
-        const currentTasksList = this.#completeTasksList.value;
+        const currentTasksList = this.#fullList.value;
         const newTasksList = [...currentTasksList, newTask];
 
-        this.#localStorageService.setLocalStorageItem(
-            'tasksList',
-            newTasksList
-        );
+        this.#localStorage.setLocalStorageItem('tasksList', newTasksList);
     }
 
     //Create a new task
@@ -144,7 +140,7 @@ export class TasksListService {
 
     //Update / edit a task
     public updateTask(id: number, taskValues: any) {
-        for (let task of this.#completeTasksList.value) {
+        for (let task of this.#fullList.value) {
             if (task.id === id) {
                 task.title = taskValues.title;
                 task.subject = taskValues.subject;
@@ -154,20 +150,20 @@ export class TasksListService {
             }
         }
 
-        this.#localStorageService.setLocalStorageItem(
+        this.#localStorage.setLocalStorageItem(
             'tasksList',
-            this.#completeTasksList.value
+            this.#fullList.value
         );
     }
 
     //Delete task from a specific localStorage
     #deleteTask(id: number, local: string) {
-        const list = this.#localStorageService.getLocalStorageItem(local);
+        const list = this.#localStorage.getLocalStorageItem(local);
         const modifiedList = list.filter((task: ITask) => {
             return task.id !== id;
         });
 
-        this.#localStorageService.setLocalStorageItem(local, modifiedList);
+        this.#localStorage.setLocalStorageItem(local, modifiedList);
     }
 
     //Swap a task's storage location
@@ -181,18 +177,14 @@ export class TasksListService {
         const task = this.getTaskById(id);
 
         //Get target location data, add task and save changes
-        const list =
-            this.#localStorageService.getLocalStorageItem(toLocal) || [];
+        const list = this.#localStorage.getLocalStorageItem(toLocal) || [];
         if (modifiedTask) {
-            this.#localStorageService.setLocalStorageItem(toLocal, [
+            this.#localStorage.setLocalStorageItem(toLocal, [
                 ...list,
                 modifiedTask,
             ]);
         } else {
-            this.#localStorageService.setLocalStorageItem(toLocal, [
-                ...list,
-                task,
-            ]);
+            this.#localStorage.setLocalStorageItem(toLocal, [...list, task]);
         }
 
         //Delete task from original location
@@ -231,19 +223,19 @@ export class TasksListService {
 
     //Clear the history
     public clearHistory() {
-        this.#localStorageService.setLocalStorageItem('tasksHistoric', []);
+        this.#localStorage.setLocalStorageItem('tasksHistoric', []);
     }
 
     //Get task via ID
     public getTaskById(id: number | string) {
         const taskId = Number(id);
 
-        let task = this.#completeTasksList.value.filter((task) => {
+        let task = this.#fullList.value.filter((task) => {
             return task.id === taskId;
         });
 
         if (task.length === 0) {
-            task = this.#tasksHistoric.value.filter((task) => {
+            task = this.#tasksHistory.value.filter((task) => {
                 return task.id === taskId;
             });
         }
@@ -256,21 +248,21 @@ export class TasksListService {
         //If there is no searchValue, set the tasksListToRender as a completeTasksList
         //And reset the search string, to ensure the correct display of the tasksListToRender
         if (!searchValue) {
-            this.#tasksListToRender.next(this.#completeTasksList.value);
-            this.#tasksSearchString.set(null);
+            this.#listToRender.next(this.#fullList.value);
+            this.#searchString.set(null);
             return;
         }
 
         //Store the search value
-        this.#tasksSearchString.set(searchValue);
+        this.#searchString.set(searchValue);
 
         //Filter the tasks that match the search
         const regex = new RegExp(`^${searchValue}`, 'i');
-        const filterTasks = this.#completeTasksList.value.filter((task) => {
+        const filterTasks = this.#fullList.value.filter((task) => {
             return regex.test(task.title) || regex.test(task.subject!);
         });
 
         //Modify the tasksListToRender according to the search
-        this.#tasksListToRender.next(filterTasks);
+        this.#listToRender.next(filterTasks);
     }
 }

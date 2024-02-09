@@ -15,7 +15,7 @@ import { TasksListService } from '@services/tasksList/tasks-list.service';
 })
 export class DashboardHeaderComponent {
     #router = inject(Router);
-    #tasksListService = inject(TasksListService);
+    #tasksList = inject(TasksListService);
 
     //Access page create task
     public handleCreateTask() {
@@ -26,6 +26,6 @@ export class DashboardHeaderComponent {
     public searchTasks($event: KeyboardEvent) {
         const target = $event.target as HTMLInputElement;
         const query = target.value;
-        this.#tasksListService.getTasksBySearch(query);
+        this.#tasksList.getTasksBySearch(query);
     }
 }

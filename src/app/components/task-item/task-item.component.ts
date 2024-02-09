@@ -28,7 +28,7 @@ import { TasksListService } from '@services/tasksList/tasks-list.service';
 })
 export class TaskItemComponent {
     #router = inject(Router);
-    #taskListService = inject(TasksListService);
+    #taskList = inject(TasksListService);
 
     //Get values of Enum
     public taskPrioritiesValues = ETaskPriority;
@@ -47,10 +47,10 @@ export class TaskItemComponent {
         id: number,
         action: 'complete' | 'delete'
     ) {
-        this.#taskListService.completeOrDeleteTask(id, action);
+        this.#taskList.completeOrDeleteTask(id, action);
     }
 
     public handleRestore(id: number) {
-        this.#taskListService.restoreTask(id);
+        this.#taskList.restoreTask(id);
     }
 }

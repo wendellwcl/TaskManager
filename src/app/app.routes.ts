@@ -39,11 +39,11 @@ export const routes: Routes = [
             ),
     },
     {
-        path: 'historic',
+        path: 'history',
         title: 'Histórico | Task Manager',
         loadComponent: () =>
-            import('@pages/historic/historic.component').then(
-                (m) => m.HistoricComponent
+            import('@pages/history/history.component').then(
+                (m) => m.HistoryComponent
             ),
     },
     {

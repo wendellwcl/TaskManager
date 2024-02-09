@@ -26,21 +26,21 @@ import { TasksListService } from '@services/tasksList/tasks-list.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DeadlineComponent implements OnInit, OnDestroy {
-    #tasksListService = inject(TasksListService);
-    #deadlineTasksListSubscription = new Subscription();
+    #tasksService = inject(TasksListService);
+    #deadlineTasksSubscription = new Subscription();
 
-    public deadlineTasksList = signal<ITask[] | null>(null);
+    public deadlineTasks = signal<ITask[] | null>(null);
 
     ngOnInit(): void {
-        //Subscribing to get the data from deadlineTasksList
-        this.#deadlineTasksListSubscription =
-            this.#tasksListService.getDeadlineTasksList$.subscribe((value) =>
-                this.deadlineTasksList.set(value)
+        //Subscribing to get the data from deadlineTasks
+        this.#deadlineTasksSubscription =
+            this.#tasksService.getDeadlineTasks$.subscribe((value) =>
+                this.deadlineTasks.set(value)
             );
     }
 
     ngOnDestroy(): void {
-        //Unsubscribing from deadlineTasksList
-        this.#deadlineTasksListSubscription.unsubscribe();
+        //Unsubscribing from deadlineTasks
+        this.#deadlineTasksSubscription.unsubscribe();
     }
 }

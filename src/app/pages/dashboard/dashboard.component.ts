@@ -27,24 +27,25 @@ import { TasksListService } from '@services/tasksList/tasks-list.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-    #tasksListService = inject(TasksListService);
-    #tasksListSubscription?: Subscription;
+    #tasksService = inject(TasksListService);
+    #tasksSubscription?: Subscription;
 
-    public tasksLists = signal<ITask[] | null>(null);
+    public renderList = signal<ITask[] | null>(null);
 
     ngOnInit(): void {
         //Subscribing to get the data from tasksListToRender
-        this.#tasksListSubscription =
-            this.#tasksListService.getTasksListToRender$.subscribe((value) => {
-                this.tasksLists.set(value);
-            });
+        this.#tasksSubscription = this.#tasksService.getListToRender$.subscribe(
+            (value) => {
+                this.renderList.set(value);
+            }
+        );
     }
 
     ngOnDestroy(): void {
         //Unsubscribing from tasksListToRender
-        this.#tasksListSubscription?.unsubscribe();
+        this.#tasksSubscription?.unsubscribe();
 
         //Resetting the search on destroy, to ensure no unwanted behavior is caused
-        this.#tasksListService.getTasksBySearch('');
+        this.#tasksService.getTasksBySearch('');
     }
 }
