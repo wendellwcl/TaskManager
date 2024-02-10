@@ -3,11 +3,8 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
     {
         path: '',
-        title: 'Dashboard | Task Manager',
-        loadComponent: () =>
-            import('@pages/dashboard/dashboard.component').then(
-                (m) => m.DashboardComponent
-            ),
+        redirectTo: '/dashboard',
+        pathMatch: 'full',
     },
     {
         path: 'dashboard',
