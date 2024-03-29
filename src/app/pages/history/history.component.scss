@@ -1,1 +1,22 @@
-@use "@pagesStyles/_history.scss";
+@import "../../../styles/0-helpers/mixins";
+
+:host {
+    .historic-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    .historic-header {
+        @include page-header;
+    }
+
+    .btn-clear-container {
+        width: 100%;
+        padding: 0.8rem 1.6rem;
+    }
+
+    .btn-clear {
+        @include btn-default;
+        width: 100%;
+    }
+}

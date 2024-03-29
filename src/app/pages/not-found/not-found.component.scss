@@ -1,1 +1,29 @@
-@use "@pagesStyles/_notFound.scss";
+@import "../../../styles/0-helpers/mixins";
+
+:host {
+    .notFound-container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .notFound-msg {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        color: var(--color-primary);
+        font-weight: bold;
+
+        .error-number {
+            font-size: 6rem;
+        }
+    }
+
+    .notFound-btn {
+        @include btn-default;
+    }
+}

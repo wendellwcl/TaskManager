@@ -1,1 +1,164 @@
-@use "@componentsStyles/_task-item.scss";
+@import "../../../styles/0-helpers/mixins";
+
+:host {
+    .task-item {
+        width: 100%;
+        padding: 0.8rem 1.2rem;
+        background: var(--color-light-010);
+        border-radius: 0.8rem;
+    }
+
+    .task-status-container {
+        .task-status {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: capitalize;
+            padding-left: 0.8rem;
+            position: relative;
+
+            &::before {
+                content: "⦁";
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+
+            &.completed {
+                color: var(--color-success);
+            }
+
+            &.deleted {
+                color: var(--color-danger);
+            }
+        }
+    }
+
+    .task-item-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .task-title {
+            font-size: 2rem;
+            font-weight: bold;
+            text-transform: capitalize;
+
+            @media screen and (max-width: 768px) {
+                font-size: 1.6rem;
+            }
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 0.8rem;
+
+            @media screen and (max-width: 768px) {
+                gap: 0.4rem;
+            }
+
+            button {
+                display: flex;
+                place-content: center;
+                padding: 0.4rem;
+                background: var(--color-primary);
+                border: none;
+                border-radius: 0.8rem;
+                font-size: 2rem;
+                color: var(--color-dark);
+                cursor: pointer;
+                transition: all 0.3s;
+
+                @media screen and (max-width: 768px) {
+                    padding: 0.2rem;
+                    font-size: 1.6rem;
+                }
+
+                &.btn-conclude {
+                    &:hover {
+                        background: var(--color-success);
+                    }
+                }
+
+                &.btn-edit,
+                &.btn-restore {
+                    &:hover {
+                        background: var(--color-info);
+                    }
+                }
+
+                &.btn-delete {
+                    &:hover {
+                        background: var(--color-danger);
+                    }
+                }
+
+                mat-icon {
+                    font-size: inherit;
+                    display: flex;
+                    place-content: center;
+                    place-items: center;
+                }
+
+                span {
+                    display: block;
+                    position: absolute;
+                    width: 0px;
+                    height: 0px;
+                    visibility: hidden;
+                }
+            }
+        }
+    }
+
+    .task-infos {
+        display: flex;
+        gap: 2.8rem;
+        color: var(--color-primary);
+
+        @media screen and (max-width: 768px) {
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        > *:not(:last-child) {
+            &::after {
+                content: "⦁";
+                position: absolute;
+                right: -1.6rem;
+                top: 0;
+
+                @media screen and (max-width: 768px) {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .task-subject,
+    .task-priority,
+    .task-deadlineDate {
+        text-transform: capitalize;
+        font-size: 1.4rem;
+        font-weight: bold;
+        position: relative;
+
+        @media screen and (max-width: 768px) {
+            font-size: 1.2rem;
+        }
+    }
+
+    .task-item-details {
+        margin-top: 0.8rem;
+        font-size: 1.4rem;
+
+        summary {
+            cursor: pointer;
+        }
+
+        details[open] {
+            summary {
+                margin-bottom: 0.8rem;
+            }
+        }
+    }
+}

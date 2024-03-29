@@ -1,1 +1,151 @@
-@use "@pagesStyles/_form.scss";
+@import "../../../styles/0-helpers/mixins";
+
+:host {
+    .task-form-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .task-form-header {
+        @include page-header;
+    }
+
+    .task-form {
+        width: 100%;
+        max-width: 640px;
+        align-self: center;
+        padding: 1.6rem;
+
+        .input-container,
+        .select-container,
+        .date-container {
+            margin-bottom: 1.6rem;
+        }
+    }
+
+    .input-container {
+        width: 100%;
+        position: relative;
+
+        > textarea {
+            height: 120px;
+
+            @media screen and (max-width: 768px) {
+                height: 80px;
+            }
+        }
+
+        .invalid-input-message {
+            display: none;
+            color: var(--color-danger);
+            font-size: 1.4rem;
+            margin-top: 0.4rem;
+
+            @media screen and (max-width: 768px) {
+                font-size: 1.2rem;
+            }
+        }
+
+        &.invalid {
+            input {
+                border: 1px solid var(--color-danger);
+            }
+
+            .invalid-input-message {
+                display: block;
+            }
+        }
+    }
+
+    .label {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        padding: 0 2px;
+        color: var(--color-primary);
+        font-weight: bold;
+        z-index: 1;
+        transition: all 0.2s;
+
+        @media screen and (max-width: 768px) {
+            font-size: 1.4rem;
+        }
+
+        &:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 100%;
+            height: 5px;
+            background: var(--color-light);
+            z-index: -1;
+        }
+    }
+
+    .input-field {
+        width: 100%;
+        padding: 0.8rem;
+        font-size: 1.6rem;
+        color: var(--color-dark);
+        background: transparent;
+        border: 1px solid var(--color-primary);
+        border-radius: 0.8rem;
+        outline: none;
+        transition: all 0.2s;
+
+        &::placeholder {
+            font-size: 1.6rem;
+            opacity: 0;
+            transition: all 0.2s;
+        }
+
+        &:focus {
+            &::placeholder {
+                opacity: 1;
+            }
+
+            + .label {
+                top: -10px;
+                font-size: 1.4rem;
+            }
+        }
+
+        + .label {
+            &.filled {
+                top: -10px;
+                font-size: 1.4rem;
+                font-weight: bold;
+            }
+        }
+    }
+
+    .select-container,
+    .date-container {
+        label {
+            display: block;
+            margin-bottom: 0.4rem;
+            color: var(--color-primary);
+            font-weight: bold;
+        }
+
+        select,
+        input[type="date"] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--color-primary);
+            border-radius: 0.8rem;
+            background-color: transparent;
+            color: var(--color-dark);
+            outline: none;
+        }
+    }
+
+    .btn-submit {
+        @include btn-default;
+        width: 100%;
+        text-transform: capitalize;
+    }
+}

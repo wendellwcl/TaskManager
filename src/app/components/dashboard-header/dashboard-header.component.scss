@@ -1,1 +1,47 @@
-@use "@componentsStyles/_dashboard-header.scss";
+@import "../../../styles/0-helpers/mixins";
+
+:host {
+    .dashboard-header {
+        width: 100%;
+        height: var(--header-height);
+        position: sticky;
+        top: 0;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        place-content: center;
+        gap: 2rem;
+        padding: 1.6rem 3.2rem;
+        background: var(--color-light);
+        z-index: 1;
+
+        @media screen and (max-width: 768px) {
+            grid-template-columns: 1fr;
+            gap: 0;
+            padding: 1.6rem 2rem;
+        }
+    }
+
+    .search-input {
+        display: block;
+        width: 100%;
+        max-width: 540px;
+        justify-self: center;
+        padding: 0.8rem 1.2rem;
+        background: transparent;
+        border: 2px solid var(--color-primary);
+        border-radius: 2rem;
+
+        &:focus {
+            border: 2px solid var(--color-primary);
+            outline: 2px solid var(--color-primary);
+        }
+    }
+
+    .btn-create-task {
+        @include btn-default;
+
+        @media screen and (max-width: 768px) {
+            display: none;
+        }
+    }
+}

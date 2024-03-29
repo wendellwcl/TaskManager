@@ -1,1 +1,13 @@
-@use "@componentsStyles/_task-list-render.scss";
+:host {
+    .tasks-list-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        padding: 1.6rem;
+    }
+
+    .tasks-list-empty {
+        text-align: center;
+    }
+}

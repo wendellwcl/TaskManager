@@ -1,1 +1,112 @@
-@use "@componentsStyles/_navbar.scss";
+:host {
+    .navbar {
+        width: 100%;
+        height: 100%;
+        padding: 0.8rem 1.6rem;
+        border-right: 1px solid var(--color-light-010);
+
+        @media screen and (max-width: 768px) {
+            padding: 0;
+            display: flex;
+            border: none;
+            background-color: var(--color-light-010);
+        }
+    }
+
+    .logo {
+        a {
+            display: flex;
+            place-content: center;
+
+            img {
+                width: 4rem;
+                aspect-ratio: 1/1;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            display: none;
+        }
+    }
+
+    .nav-links-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+
+        @media screen and (max-width: 768px) {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-areas: "historic deadline dashboard create-task about";
+            gap: 0;
+        }
+
+        .nav-link-item {
+            width: 100%;
+
+            .nav-link {
+                display: block;
+                padding: 0.8rem 1.2rem;
+                border-radius: 0.8rem;
+                color: var(--color-dark);
+                display: flex;
+                align-items: center;
+                transition: all 0.2s;
+
+                @media screen and (max-width: 768px) {
+                    height: 100%;
+                    padding: 0.4rem;
+                    border-radius: 0;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1rem;
+                    text-align: center;
+                }
+
+                &:hover,
+                &.active-link {
+                    background-color: var(--color-light-010);
+
+                    @media screen and (max-width: 768px) {
+                        background-color: var(--color-primary);
+                    }
+                }
+
+                mat-icon {
+                    font-size: 2rem;
+                    display: flex;
+                    place-items: center;
+                    place-content: center;
+                    margin-right: 0.2rem;
+
+                    @media screen and (max-width: 768px) {
+                        margin-right: 0;
+                        margin-bottom: 0.2rem;
+                    }
+                }
+            }
+        }
+    }
+
+    .dashboard {
+        grid-area: dashboard;
+    }
+
+    .create-task {
+        grid-area: create-task;
+    }
+
+    .deadline {
+        grid-area: deadline;
+    }
+
+    .historic {
+        grid-area: historic;
+    }
+
+    .about {
+        grid-area: about;
+    }
+}

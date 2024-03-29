@@ -1,1 +1,12 @@
-@use "@pagesStyles/_deadline.scss";
+@import "../../../styles/0-helpers/mixins";
+
+:host {
+    .deadline-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    .deadline-header {
+        @include page-header;
+    }
+}
